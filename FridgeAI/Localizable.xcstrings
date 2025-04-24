@@ -1,0 +1,71 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "-" : {
+
+    },
+    "/ %.0f%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "/ %1$.0f%2$@"
+          }
+        }
+      }
+    },
+    "%.0f%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$.0f%2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "•" : {
+
+    },
+    "+" : {
+
+    },
+    "+ Zutat" : {
+
+    },
+    "Hier klicken für die gesamte Anleitung" : {
+
+    },
+    "Kurzanleitung:" : {
+
+    },
+    "Mein Kühlschrank" : {
+
+    },
+    "Nährwerte:" : {
+
+    },
+    "QR-Code scannen" : {
+
+    },
+    "Rezept finden" : {
+
+    },
+    "Rezepte" : {
+
+    },
+    "Zutat" : {
+
+    },
+    "Zutaten" : {
+
+    }
+  },
+  "version" : "1.0"
+}

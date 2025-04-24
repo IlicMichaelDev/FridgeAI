@@ -6,23 +6,46 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0609D2282DB25D81007A19DD /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0609D2272DB25D81007A19DD /* Barcode.swift */; };
+		060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7B852DB8EF6C0082EC21 /* Nutrition.swift */; };
+		060C7B892DB8EFAC0082EC21 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7B882DB8EFAC0082EC21 /* Extensions.swift */; };
+		063312552DB00CE800AFA650 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 063312542DB00CE800AFA650 /* CodeScanner */; };
+		0670CC4B2DB7EA1900AC54E0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0670CC4A2DB7EA1900AC54E0 /* Localizable.xcstrings */; };
+		068BEA812DBA2A2400FB693D /* NetworkCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068BEA802DBA2A2400FB693D /* NetworkCalls.swift */; };
+		06A34DBF2DAE8D8600ADAA6B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06A34DB92DAE8D8600ADAA6B /* Preview Assets.xcassets */; };
+		06A34DC02DAE8D8600ADAA6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06A34DBB2DAE8D8600ADAA6B /* Assets.xcassets */; };
+		06A34DC12DAE8D8600ADAA6B /* IngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */; };
+		06A34DC22DAE8D8600ADAA6B /* FridgeAIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DBD2DAE8D8600ADAA6B /* FridgeAIApp.swift */; };
+		06A34DC92DAE8DCE00ADAA6B /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DC82DAE8DCE00ADAA6B /* Recipe.swift */; };
+		06A34DCB2DAE8DEA00ADAA6B /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */; };
+		06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */; };
+		06A34DCF2DAE8F0000ADAA6B /* RecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		0601CA3C2DAD1414006015E4 /* FridgeAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FridgeAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0609D2272DB25D81007A19DD /* Barcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
+		060C7B852DB8EF6C0082EC21 /* Nutrition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrition.swift; sourceTree = "<group>"; };
+		060C7B882DB8EFAC0082EC21 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0670CC4A2DB7EA1900AC54E0 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		068BEA802DBA2A2400FB693D /* NetworkCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCalls.swift; sourceTree = "<group>"; };
+		06A34DB92DAE8D8600ADAA6B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		06A34DBB2DAE8D8600ADAA6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientView.swift; sourceTree = "<group>"; };
+		06A34DBD2DAE8D8600ADAA6B /* FridgeAIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FridgeAIApp.swift; sourceTree = "<group>"; };
+		06A34DC82DAE8DCE00ADAA6B /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
+		06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		0601CA3E2DAD1414006015E4 /* FridgeAI */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FridgeAI;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0601CA392DAD1414006015E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				063312552DB00CE800AFA650 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +55,7 @@
 		0601CA332DAD1414006015E4 = {
 			isa = PBXGroup;
 			children = (
-				0601CA3E2DAD1414006015E4 /* FridgeAI */,
+				06A34DBE2DAE8D8600ADAA6B /* FridgeAI */,
 				0601CA3D2DAD1414006015E4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +66,58 @@
 				0601CA3C2DAD1414006015E4 /* FridgeAI.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		06A34DBA2DAE8D8600ADAA6B /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				06A34DB92DAE8D8600ADAA6B /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		06A34DBE2DAE8D8600ADAA6B /* FridgeAI */ = {
+			isa = PBXGroup;
+			children = (
+				06A34DBD2DAE8D8600ADAA6B /* FridgeAIApp.swift */,
+				06A34DC52DAE8D9800ADAA6B /* Model */,
+				06A34DC62DAE8DA400ADAA6B /* ViewModel */,
+				06A34DC72DAE8DB200ADAA6B /* View */,
+				06A34DBB2DAE8D8600ADAA6B /* Assets.xcassets */,
+				0670CC4A2DB7EA1900AC54E0 /* Localizable.xcstrings */,
+				06A34DBA2DAE8D8600ADAA6B /* Preview Content */,
+				068BEA802DBA2A2400FB693D /* NetworkCalls.swift */,
+				060C7B882DB8EFAC0082EC21 /* Extensions.swift */,
+			);
+			path = FridgeAI;
+			sourceTree = "<group>";
+		};
+		06A34DC52DAE8D9800ADAA6B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				06A34DC82DAE8DCE00ADAA6B /* Recipe.swift */,
+				060C7B852DB8EF6C0082EC21 /* Nutrition.swift */,
+				06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */,
+				0609D2272DB25D81007A19DD /* Barcode.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		06A34DC62DAE8DA400ADAA6B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		06A34DC72DAE8DB200ADAA6B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */,
+				06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,11 +135,9 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				0601CA3E2DAD1414006015E4 /* FridgeAI */,
-			);
 			name = FridgeAI;
 			packageProductDependencies = (
+				063312542DB00CE800AFA650 /* CodeScanner */,
 			);
 			productName = FridgeAI;
 			productReference = 0601CA3C2DAD1414006015E4 /* FridgeAI.app */;
@@ -91,9 +164,13 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 0601CA332DAD1414006015E4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				063312532DB00CE800AFA650 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0601CA3D2DAD1414006015E4 /* Products */;
 			projectDirPath = "";
@@ -109,6 +186,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06A34DBF2DAE8D8600ADAA6B /* Preview Assets.xcassets in Resources */,
+				06A34DC02DAE8D8600ADAA6B /* Assets.xcassets in Resources */,
+				0670CC4B2DB7EA1900AC54E0 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +199,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0609D2282DB25D81007A19DD /* Barcode.swift in Sources */,
+				060C7B892DB8EFAC0082EC21 /* Extensions.swift in Sources */,
+				06A34DCB2DAE8DEA00ADAA6B /* Ingredient.swift in Sources */,
+				06A34DC92DAE8DCE00ADAA6B /* Recipe.swift in Sources */,
+				068BEA812DBA2A2400FB693D /* NetworkCalls.swift in Sources */,
+				06A34DC12DAE8D8600ADAA6B /* IngredientView.swift in Sources */,
+				06A34DC22DAE8D8600ADAA6B /* FridgeAIApp.swift in Sources */,
+				06A34DCF2DAE8F0000ADAA6B /* RecipeViewModel.swift in Sources */,
+				060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */,
+				06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +274,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -240,6 +331,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -255,6 +347,7 @@
 				DEVELOPMENT_TEAM = 79N9K2FRXV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Wir benötigen die Kamera zum scannen von Produkten";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +377,7 @@
 				DEVELOPMENT_TEAM = 79N9K2FRXV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Wir benötigen die Kamera zum scannen von Produkten";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -324,6 +418,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		063312532DB00CE800AFA650 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		063312542DB00CE800AFA650 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 063312532DB00CE800AFA650 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0601CA342DAD1414006015E4 /* Project object */;
 }

@@ -11,7 +11,7 @@ import SwiftUI
 struct FridgeAIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            IngredientView()
         }
     }
 }
