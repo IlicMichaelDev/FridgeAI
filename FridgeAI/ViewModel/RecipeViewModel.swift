@@ -31,6 +31,25 @@ class RecipeViewModel: ObservableObject {
     @Published var newIngredientAmount: Int = 1
     @Published var isLoading = false
     
+    @Published var testRecipes: [Recipe] = [Recipe(id: 645555, title: "Green Tomato Salad #1", image: "https://img.spoonacular.com/recipes/645555-312x231.jpg",
+                                                   missedIngredients: [MissedIngredients(id: 10211111, name: "sumac powder"), MissedIngredients(id: 5, name: "sage and mint leaves")],
+                                                   usedIngredients: [UsedIngredients(id: 11527, name: "tomato")],
+                                                   sourceUrl: "https://www.foodista.com/recipe/KWMJ8SPX/green-tomato-salad", vegetarian: true, vegan: true, veryHealthy: true,
+                                                       nutrition: Nutrition(nutrients: [Nutrient(name: "Calories", amount: 180.37, unit: "kcal", percentOfDailyNeeds: 9.02),
+                                                       Nutrient(name: "Protein", amount: 2.61, unit: "g", percentOfDailyNeeds: 5.22),
+                                                       Nutrient(name: "Fat", amount: 14.88, unit: "g", percentOfDailyNeeds: 22.89),
+                                                       Nutrient(name: "Carbohydrates", amount: 11.1, unit: "g", percentOfDailyNeeds: 3.67)],
+                                                                            caloricBreakdown: CaloricBreakdown(percentProtein: 4.4, percentFat: 5.5, percentCarbs: 6.6)), instructions: "Slice the tomato into thin round discs. Roll the mint and sage leaves into a tight ball and then chop it up finely. Add to the olive oil and sumac to make a dressing. Drizzle over the tomato slices."),
+                                            Recipe(id: 646734, title: "Green Tomate Salad", image: "https://img.spoonacular.com/recipes/645555-312x231.jpg",
+                                                missedIngredients: [MissedIngredients(id: 10211111, name: "sumac powder"), MissedIngredients(id: 5, name: "sage and mint leaves")],
+                                                usedIngredients: [UsedIngredients(id: 11527, name: "tomato")],
+                                                   sourceUrl: "https://www.foodista.com/recipe/KWMJ8SPX/green-tomato-salad", vegetarian: true, vegan: false, veryHealthy: true,
+                                                    nutrition: Nutrition(nutrients: [Nutrient(name: "Calories", amount: 180.37, unit: "kcal", percentOfDailyNeeds: 9.02),
+                                                    Nutrient(name: "Protein", amount: 2.61, unit: "g", percentOfDailyNeeds: 5.22),
+                                                    Nutrient(name: "Fat", amount: 14.88, unit: "g", percentOfDailyNeeds: 22.89),
+                                                    Nutrient(name: "Carbohydrates", amount: 11.1, unit: "g", percentOfDailyNeeds: 3.67)],
+                                                                         caloricBreakdown: CaloricBreakdown(percentProtein: 4.4, percentFat: 5.5, percentCarbs: 6.6)), instructions: "Slice the tomato into thin round discs. Roll the mint and sage leaves into a tight ball and then chop it up finely. Add to the olive oil and sumac to make a dressing. Drizzle over the tomato slices.")]
+    
     func addIngredient() {
         guard !newIngredientName.isEmpty else { return }
         let ingredient = Ingredient(name: newIngredientName, amount: newIngredientAmount)
@@ -124,8 +143,6 @@ class RecipeViewModel: ObservableObject {
         .resume()
         
     }
-    
-    
     
     func updateIngredientAmount(for ingredientID: UUID, newAmount: Int) {
         if let index = ingredients.firstIndex(where: { $0.id == ingredientID }) {

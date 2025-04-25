@@ -13,7 +13,7 @@ struct IngredientView: View {
     @StateObject private var recipevm = RecipeViewModel()
     //    @StateObject var networkManager = NetworkCalls()
     
-    @State private var pickerState: Bool = true
+    @State private var pickerState = true
     @State private var showScannerView = false
     @State private var isScanning = false
     @State private var showDetailView = false
@@ -182,9 +182,12 @@ struct IngredientView: View {
                     if recipevm.recipes.isEmpty {
                         ContentUnavailableView("Du musst zuerst Zutaten hinzufügen damit ich dir ein gutes Rezept empfehlen kann.", systemImage: "oven")
                     }
-                    List(recipevm.recipes) { recipe in
-                        NavigationLink(destination: RecipeView(recipe: recipe)) {
-                            Text(recipe.title)
+                    List {
+                        //Für testzwecke statt '.recipes' - '.testRecipes' eingeben
+                        ForEach(recipevm.recipes, id: \.id) { recipe in
+                            NavigationLink(destination: RecipeView(recipe: recipe)) {
+                                RecipeResultsView(recipe: recipe)
+                            }
                         }
                     }
                 }
@@ -209,10 +212,18 @@ struct IngredientView: View {
                         }
                     }
                 }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack(alignment: .center, spacing: 4) {
+                        Image(systemName: "flame.fill")
+                            .foregroundStyle(Gradient(colors: [Color.orange, Color.red]))
+                        Text("2")
+                    }
+                }
             }
         }
-        .sheet(isPresented: $showSettingsView) {
-            Text("Settingsview")
+        .fullScreenCover(isPresented: $showSettingsView) {
+            SettingsView(showSettingsView: $showSettingsView)
         }
     }
     
@@ -243,14 +254,188 @@ struct IngredientView: View {
     }
 }
 
-struct SettingsView: View {
+struct RecipeResultsView: View {
+    
+    let recipe: Recipe
+    
     var body: some View {
-        Section {
-            Text("Hi")
-        } header: {
-            Text("Sectionheader")
+        HStack {
+            AsyncImage(url: URL(string: recipe.image)) { image in
+                image
+                    .resizable()
+                    .frame(width: 90, height: 70)
+                    .aspectRatio(contentMode: .fill)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            } placeholder: {
+                Rectangle()
+                    .frame(width: 90, height: 70)
+                    .foregroundStyle(.secondary)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text(recipe.title)
+                Text(getActiveTags())
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
         }
+    }
+    
+    private func getActiveTags() -> String {
+        var tags = [String]()
+        if recipe.vegetarian && recipe.vegan { tags.append("Vegan") } else {
+            if recipe.vegetarian { tags.append("Vegetarisch") }
+            if recipe.vegan { tags.append("Vegan") }
+        }
+        if recipe.veryHealthy { tags.append("Sehr gesund") }
+        return tags.joined(separator: ", ")
+    }
+}
 
+struct SettingsView: View {
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var toggleDarkmode = false
+    @State private var toggleNotifications = false
+    @State private var toggleFaceID = false
+    @State private var togglePINCode = false
+    
+    @Binding var showSettingsView: Bool
+    
+    var body: some View {
+        
+        NavigationStack {
+            VStack {
+                Circle()
+                    .frame(width: 100, height: 100)
+                Text("Michael Ilic")
+                    .font(.title2)
+                    .bold()
+                Text("michi.ilic.hotmail.com")
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+                
+                List {
+                    Section("Account") {
+                        buttonWithAction("Profil", systemName: "person") {
+                            
+                        }
+                        buttonWithAction("Favoriten", systemName: "star") {
+                            
+                        }
+                    }
+                    
+                    Section("Generell") {
+                        toggleButton(systemImage: "moon.stars", title: "Darkmode", toggle: $toggleDarkmode)
+                    }
+                    
+                    Section("Sicherheit & Benachrichtigung") {
+                        toggleButton(systemImage: "bell.badge", title: "Benachrichtung", toggle: $toggleNotifications)
+                        toggleButton(systemImage: "faceid", title: "Face ID", toggle: $toggleFaceID)
+                        toggleButton(systemImage: "circle.grid.3x3", title: "PIN Code", toggle: $togglePINCode)
+                    }
+                    
+                    Section("Feedback") {
+                        buttonWithAction("Verbesserungsvorschläge", systemName: "envelope") {
+                            
+                        }
+                        buttonWithAction("Bug melden", systemName: "exclamationmark") {
+                            
+                        }
+                        buttonWithAction("App bewerten", systemName: "star") {
+                            //AppStore bewertung
+                        }
+                    }
+                    
+                    Section("Informationen") {
+                        buttonWithAction("About us", systemName: "info") {
+                            
+                        }
+                        buttonWithAction("API's", systemName: "globe") {
+                            
+                        }
+                    }
+                    Button {
+                        
+                    } label: {
+                        HStack {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                                .frame(width: 20, height: 20)
+                                .padding(6)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .fill(.red.opacity(0.1))
+                                }
+                            Text("Ausloggen")
+                        }
+                        .foregroundStyle(.red)
+                    }
+                }
+            }
+            .padding(.top)
+            .background {
+                Color(UIColor.systemGroupedBackground)
+                    .ignoresSafeArea()
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showSettingsView = false
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(.gray)
+                            .frame(width: 20, height: 20)
+                            .padding(6)
+                            .background {
+                                Circle()
+                                    .fill(.gray.opacity(0.2))
+                            }
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func toggleButton(systemImage: String, title: String, toggle: Binding<Bool>) -> some View {
+        HStack {
+            Image(systemName: systemImage)
+                .foregroundStyle(.gray)
+                .padding(6)
+                .background {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(.gray.opacity(0.2))
+                }
+            Text(title)
+            Spacer()
+            Toggle("", isOn: toggle)
+        }
+    }
+    
+    // @escaping wird hier gebraucht, weil beim closure oben wird direkt eine aktion verlangt, bei der funktion aber wird diese erst aufgerufen wenn der button gedrückt wird.
+    @ViewBuilder
+    private func buttonWithAction(_ title: String, systemName: String, action: @escaping () -> Void) -> some View {
+        Button {
+            action()
+        } label: {
+            HStack {
+                Image(systemName: systemName)
+                    .foregroundStyle(.gray)
+                    .frame(width: 20, height: 20)
+                    .padding(6)
+                    .background {
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(.gray.opacity(0.2))
+                    }
+                Text(title)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.gray)
+            }
+        }
+        .foregroundStyle(.primary)
     }
 }
 

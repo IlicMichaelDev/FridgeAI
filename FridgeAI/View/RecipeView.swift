@@ -12,6 +12,8 @@ struct RecipeView: View {
 //    @StateObject var networkManager = NetworkCalls()
     
     @State private var translatedText = "Übersetzung"
+    @State private var recipeDoneAlert = false
+    
     let translateAPI = "a33084c3-f34a-4f0c-8962-8092d501e473:fx"
     
     let recipe: Recipe
@@ -22,9 +24,13 @@ struct RecipeView: View {
     let protein = "Protein"
     
     var body: some View {
-        
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                Text(recipe.title)
+                    .font(.title)
+                    .bold()
+                    .padding(.horizontal)
+                
                 AsyncImage(url: URL(string: recipe.image)) { image in
                     image
                         .resizable()
@@ -68,13 +74,51 @@ struct RecipeView: View {
                 .padding(.horizontal)
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    recipeDoneAlert = true
+                } label: {
+                    Image(systemName: "checkmark")
+                        .frame(width: 25, height: 25)
+                        .foregroundStyle(.green)
+                        .padding(5)
+                        .background {
+                            Circle()
+                                .fill(.gray.opacity(0.2))
+                        }
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .frame(width: 25, height: 25)
+                        .padding(5)
+                        .background {
+                            Circle()
+                                .fill(.gray.opacity(0.2))
+                        }
+                }
+            }
+        }
+        
 //         Es funktioniert, damit ich aber nicht meine täglichen zeichen verschwende - Es muss auch noch der translatedText eingesetzt werden
         .onAppear{
             translateWithDeepL(text: recipe.instructions, apiKey: translateAPI) { germanText in
                 translatedText = germanText
             }
         }
-        .navigationTitle(recipe.title)
+        .alert("Rezept gemacht?", isPresented: $recipeDoneAlert) {
+            Button("Nein", role: .destructive) { }
+            Button("Ja") {
+                
+            }
+        } message: {
+            Text("Wenn du das Rezept gemacht hast, entferne ich die verwendeten Rezepte aus der Liste. Bist du dir sicher?")
+        }
+
     }
     
     func translateWithDeepL(
@@ -229,7 +273,7 @@ struct UnavailableIngredients: View {
     RecipeView(recipe: Recipe(id: 645555, title: "Test", image: "https://img.spoonacular.com/recipes/645555-312x231.jpg",
         missedIngredients: [MissedIngredients(id: 10211111, name: "sumac powder"), MissedIngredients(id: 5, name: "sage and mint leaves")],
         usedIngredients: [UsedIngredients(id: 11527, name: "tomato")],
-        sourceUrl: "https://www.foodista.com/recipe/KWMJ8SPX/green-tomato-salad",
+                              sourceUrl: "https://www.foodista.com/recipe/KWMJ8SPX/green-tomato-salad", vegetarian: true, vegan: true, veryHealthy: true,
             nutrition: Nutrition(nutrients: [Nutrient(name: "Calories", amount: 180.37, unit: "kcal", percentOfDailyNeeds: 9.02),
             Nutrient(name: "Protein", amount: 2.61, unit: "g", percentOfDailyNeeds: 5.22),
             Nutrient(name: "Fat", amount: 14.88, unit: "g", percentOfDailyNeeds: 22.89),
