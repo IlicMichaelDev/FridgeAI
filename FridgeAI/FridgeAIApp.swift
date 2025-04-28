@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct FridgeAIApp: App {
+    @StateObject var authVM = AuthViewModel()
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            IngredientView()
+            ContentView()
+                .environmentObject(authVM)
         }
     }
 }
