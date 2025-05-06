@@ -9,8 +9,6 @@ import SwiftUI
 
 struct RecipeView: View {
     
-//    @StateObject var networkManager = NetworkCalls()
-    
     @State private var translatedText = "Übersetzung"
     @State private var recipeDoneAlert = false
     

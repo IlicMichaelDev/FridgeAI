@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		060992812DC21FF2008CC014 /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060992802DC21FF2008CC014 /* ProfileDetail.swift */; };
+		060992832DC22083008CC014 /* APIInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060992822DC22083008CC014 /* APIInformation.swift */; };
+		060992852DC22CAD008CC014 /* BiometricAuthentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060992842DC22CAD008CC014 /* BiometricAuthentification.swift */; };
 		0609D2282DB25D81007A19DD /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0609D2272DB25D81007A19DD /* Barcode.swift */; };
 		060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7B852DB8EF6C0082EC21 /* Nutrition.swift */; };
 		060C7B892DB8EFAC0082EC21 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7B882DB8EFAC0082EC21 /* Extensions.swift */; };
@@ -36,6 +39,9 @@
 
 /* Begin PBXFileReference section */
 		0601CA3C2DAD1414006015E4 /* FridgeAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FridgeAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		060992802DC21FF2008CC014 /* ProfileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
+		060992822DC22083008CC014 /* APIInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInformation.swift; sourceTree = "<group>"; };
+		060992842DC22CAD008CC014 /* BiometricAuthentification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuthentification.swift; sourceTree = "<group>"; };
 		0609D2272DB25D81007A19DD /* Barcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
 		060C7B852DB8EF6C0082EC21 /* Nutrition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrition.swift; sourceTree = "<group>"; };
 		060C7B882DB8EFAC0082EC21 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -90,6 +96,46 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0609927B2DC21F9C008CC014 /* Generel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Generel;
+			sourceTree = "<group>";
+		};
+		0609927C2DC21FA0008CC014 /* Safety & Notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Safety & Notification";
+			sourceTree = "<group>";
+		};
+		0609927D2DC21FBD008CC014 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				067632D62DBFDA01009E8A80 /* ImprovementView.swift */,
+				0681C1AD2DBF68D200B92E67 /* ReportBugView.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		0609927E2DC21FC2008CC014 /* Information */ = {
+			isa = PBXGroup;
+			children = (
+				067632D82DBFDC5A009E8A80 /* AboutMeView.swift */,
+				060992822DC22083008CC014 /* APIInformation.swift */,
+			);
+			path = Information;
+			sourceTree = "<group>";
+		};
+		0609927F2DC21FD9008CC014 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				060992802DC21FF2008CC014 /* ProfileDetail.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		067632C62DBF84C2009E8A80 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,9 +149,11 @@
 			isa = PBXGroup;
 			children = (
 				0681C1AA2DBF68B100B92E67 /* SettingsView.swift */,
-				067632D62DBFDA01009E8A80 /* ImprovementView.swift */,
-				0681C1AD2DBF68D200B92E67 /* ReportBugView.swift */,
-				067632D82DBFDC5A009E8A80 /* AboutMeView.swift */,
+				0609927F2DC21FD9008CC014 /* Account */,
+				0609927B2DC21F9C008CC014 /* Generel */,
+				0609927C2DC21FA0008CC014 /* Safety & Notification */,
+				0609927D2DC21FBD008CC014 /* Feedback */,
+				0609927E2DC21FC2008CC014 /* Information */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -142,6 +190,7 @@
 				06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */,
 				0609D2272DB25D81007A19DD /* Barcode.swift */,
 				067632C42DBF83B3009E8A80 /* User.swift */,
+				060992842DC22CAD008CC014 /* BiometricAuthentification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -249,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				060992812DC21FF2008CC014 /* ProfileDetail.swift in Sources */,
 				067632C52DBF83B3009E8A80 /* User.swift in Sources */,
 				0609D2282DB25D81007A19DD /* Barcode.swift in Sources */,
 				060C7B892DB8EFAC0082EC21 /* Extensions.swift in Sources */,
@@ -261,9 +311,11 @@
 				067632D92DBFDC5A009E8A80 /* AboutMeView.swift in Sources */,
 				06A34DC12DAE8D8600ADAA6B /* IngredientView.swift in Sources */,
 				067632CA2DBF84E0009E8A80 /* RegistrationView.swift in Sources */,
+				060992852DC22CAD008CC014 /* BiometricAuthentification.swift in Sources */,
 				06A34DC22DAE8D8600ADAA6B /* FridgeAIApp.swift in Sources */,
 				06A34DCF2DAE8F0000ADAA6B /* RecipeViewModel.swift in Sources */,
 				067632D72DBFDA01009E8A80 /* ImprovementView.swift in Sources */,
+				060992832DC22083008CC014 /* APIInformation.swift in Sources */,
 				067632D32DBF89B9009E8A80 /* AuthViewModel.swift in Sources */,
 				060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */,
 				06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */,
@@ -407,6 +459,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Wir benötigen die Kamera zum scannen von Produkten";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Ich würde gerne FaceID verwenden";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -437,6 +490,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Wir benötigen die Kamera zum scannen von Produkten";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Ich würde gerne FaceID verwenden";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

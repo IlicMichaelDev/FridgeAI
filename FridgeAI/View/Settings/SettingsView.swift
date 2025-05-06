@@ -17,10 +17,15 @@ struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var authVM: AuthViewModel
     
+    // Sheet Toggles
     @State private var showProfileDetail = false
     @State private var showImprovementView = false
     @State private var showBugView = false
     @State private var showAboutMeView = false
+    @State private var showAPIInformation = false
+    
+    @State private var biometricAuthentification = BiometricAuthentification()
+    @State private var showAuthFailed = false
     
     @Binding var showSettingsView: Bool
     
@@ -40,7 +45,19 @@ struct SettingsView: View {
                     List {
                         Section("Account") {
                             buttonWithAction("Profil", systemName: "person") {
-                                showProfileDetail = true
+                                if isFaceIDOn {
+                                    biometricAuthentification.biometricLogin()
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: biometricAuthentification.isAuthorized ? .now() : .now() + 0.5) {
+                                        if biometricAuthentification.isAuthorized {
+                                            showProfileDetail = true
+                                        } else {
+                                            showAuthFailed = true
+                                        }
+                                    }
+                                } else {
+                                    showProfileDetail = true
+                                }
                             }
                             buttonWithAction("Passwort ändern", systemName: "lock") {
                                 
@@ -80,7 +97,7 @@ struct SettingsView: View {
                                 showAboutMeView = true
                             }
                             buttonWithAction("API's", systemName: "globe") {
-                                // Die verwendeten API's in einer Liste anzeigen
+                                showAPIInformation = true
                             }
                         }
                         Button {
@@ -132,11 +149,19 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showBugView) {
                 ReportBugView()
-                    .presentationDetents([.fraction(0.7)])
+                    .presentationDetents([.fraction(0.8)])
             }
             .sheet(isPresented: $showAboutMeView) {
                 AboutMeView()
                     .presentationDetents([.fraction(0.9)])
+            }
+            .sheet(isPresented: $showAPIInformation) {
+                APIInformation()
+                    .presentationDetents([.fraction(0.85)])
+            }
+            
+            .alert("Authentifizierung fehlgeschlagen", isPresented: $showAuthFailed) {
+                Button("OK", role: .cancel) { }
             }
         }
     }
@@ -184,80 +209,38 @@ struct SettingsView: View {
         }
         .foregroundStyle(.primary)
     }
-}
-
-struct ProfileDetail: View {
     
-    @EnvironmentObject var authVM: AuthViewModel
-    
-    var body: some View {
-        
-        if let user = authVM.currentUser {
-            NavigationStack {
-                VStack(alignment: .leading) {
-                    HStack(spacing: 10) {
-                        Circle()
-                            .frame(width: 70, height: 70)
-                        
-                        Button {
-                            
-                        } label: {
-                            Text("Ändern")
-                                .bold()
-                                .padding()
-                                .background {
-                                    Capsule()
-                                        .foregroundStyle(.gray.opacity(0.2))
-                                }
-                        }
-                        
-                        Button {
-                            
-                        } label: {
-                            Text("Löschen")
-                                .bold()
-                                .foregroundStyle(.red)
-                                .padding()
-                                .background {
-                                    Capsule()
-                                        .foregroundStyle(.red.opacity(0.1))
-                                }
-                        }
-                    }
-                    .padding()
-                    
-                    List {
-                        Section("Name") {
-                            Text(user.name)
-                        }
-                        
-                        Section("E-Mail") {
-                            Text(user.email)
-                        }
-                        
-                        Section("Passwort") {
-                            Text("********")
-                        }
-                        
-                        Section("Andere") {
-                            Button {
-                                authVM.deleteAccount()
-                                authVM.signOut()
-                            } label: {
-                                Text("Benutzer löschen")
-                                    .foregroundStyle(.red)
+    @ViewBuilder
+    private func faceIDToggle(systemImage: String, title: String) -> some View {
+        HStack {
+            Image(systemName: systemImage)
+                .foregroundStyle(.gray)
+                .padding(6)
+                .background {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(.gray.opacity(0.2))
+                }
+            Text(title)
+            Spacer()
+            Toggle("", isOn: Binding(
+                get: { isFaceIDOn },
+                set: { newValue in
+                    if newValue {
+                        biometricAuthentification.biometricLogin()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            if biometricAuthentification.isAuthorized {
+                                isFaceIDOn = true
+                            } else {
+                                isFaceIDOn = false
+                                showAuthFailed = true
                             }
                         }
+                    } else {
+                        isFaceIDOn = false
                     }
                 }
-                .background {
-                    Color(UIColor.systemGroupedBackground)
-                        .ignoresSafeArea()
-                }
-                
-                .navigationTitle("Profil bearbeiten")
-                .navigationBarTitleDisplayMode(.inline)
-            }
+            ))
+            .labelsHidden()
         }
     }
 }
