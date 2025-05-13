@@ -39,15 +39,24 @@ class AuthViewModel: ObservableObject {
     
     func createUser(withEmail email: String, password: String, fullname: String) async throws {
         do {
+            // Benutzer in Firebase Auth erstellen
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             self.userSession = result.user
             
+            // Verifizierungsmail senden
+            try await result.user.sendEmailVerification()
+            print("Verifizierungsmail wurde an \(email) gesendet")
+            
+            // Benutzerdaten in Firestore speichern
             let user = User(id: result.user.uid, name: fullname, email: email)
             let encodedUser = try Firestore.Encoder().encode(user)
             try await Firestore.firestore().collection("users").document(result.user.uid).setData(encodedUser)
+            
+            // Benutzerdaten lokal aktualisieren
             await fetchUser()
         } catch {
             print("Error creating User: \(error.localizedDescription)")
+            throw error
         }
     }
     

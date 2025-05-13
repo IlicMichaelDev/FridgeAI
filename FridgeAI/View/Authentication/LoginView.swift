@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     
     @State private var email = ""
     @State private var password = ""
+    
+    @State private var showForgotPassword = false
     
     @EnvironmentObject var authVM: AuthViewModel
     
@@ -31,6 +34,18 @@ struct LoginView: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 12)
+                
+                HStack {
+                    Spacer()
+                    Button {
+                        showForgotPassword = true
+                    } label: {
+                        Text("Passwort vergessen?")
+                            .font(.caption)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 5)
+                }
                 
                 Button {
                     Task {
@@ -66,6 +81,10 @@ struct LoginView: View {
                 }
             }
         }
+        .sheet(isPresented: $showForgotPassword) {
+            ForgotPasswordView(showForogtPassword: $showForgotPassword)
+                .presentationDetents([.fraction(0.3)])
+        }
     }
 }
 
@@ -98,6 +117,48 @@ struct InputView: View {
 extension LoginView: AuthenticationFormProtocol {
     var formIsValid: Bool {
         return !email.isEmpty && email.contains("@") && !password.isEmpty && password.count >= 6
+    }
+}
+
+struct ForgotPasswordView: View {
+    
+    @State private var email = ""
+    @State private var mailSend = false
+    @Binding var showForogtPassword: Bool
+    
+    @EnvironmentObject var authVM: AuthViewModel
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                InputView(text: $email, title: "Email Adresse", placeholder: "name@gmail.com")
+                
+                Button {
+                    mailSend = true
+                    Auth.auth().sendPasswordReset(withEmail: email)
+                    showForgotPassword = false
+                } label: {
+                    HStack {
+                        Text("MAIL SENDEN")
+                            .fontWeight(.semibold)
+                        Image(systemName: "arrow.right")
+                    }
+                    .foregroundStyle(.white)
+                    .frame(width: UIScreen.main.bounds.width - 32, height: 48)
+                }
+                .background(Color(.systemBlue))
+                .disabled(email.isEmpty)
+                .opacity(email.isEmpty ? 0.5 : 1.0)
+                .cornerRadius(10)
+                .padding(.top, 24)
+            }
+            .padding()
+            .navigationTitle("Passwort vergessen")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .alert("Test", isPresented: $mailSend) {} message: {
+            Text("Wir haben dir soeben eine Mail mit einem Link zum zurücksetzen deines Passwortes gesendet.")
+        }
     }
 }
 

@@ -62,9 +62,9 @@ struct SettingsView: View {
                             buttonWithAction("Passwort ändern", systemName: "lock") {
                                 
                             }
-                            buttonWithAction("Favoriten", systemName: "star") {
-                                
-                            }
+//                            buttonWithAction("Favoriten", systemName: "star") {
+//                                
+//                            }
                         }
                         
                         Section("Generell") {

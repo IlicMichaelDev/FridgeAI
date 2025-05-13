@@ -31,6 +31,8 @@ class RecipeViewModel: ObservableObject {
     @Published var newIngredientAmount: Int = 1
     @Published var isLoading = false
     
+    @Published var testingredients = [Ingredient(name: "Tomate", amount: 2), Ingredient(name: "Gurke", amount: 12)]
+    
     @Published var testRecipes: [Recipe] = [Recipe(id: 645555, title: "Green Tomato Salad #1", image: "https://img.spoonacular.com/recipes/645555-312x231.jpg",
                                                    missedIngredients: [MissedIngredients(id: 10211111, name: "sumac powder"), MissedIngredients(id: 5, name: "sage and mint leaves")],
                                                    usedIngredients: [UsedIngredients(id: 11527, name: "tomato")],

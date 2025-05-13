@@ -51,7 +51,6 @@ struct IngredientView: View {
                     }
                     .padding()
                     
-                    
                     if recipevm.ingredients.isEmpty {
                         ContentUnavailableView("Du hast nichts im Kühlschrank, du musst einkaufen gehen.", systemImage: "figure.walk.departure")
                     } else {
@@ -85,7 +84,7 @@ struct IngredientView: View {
                                         }
                                 }
                                 .onTapGesture {
-                                    //                                showDetailView = true
+                                    
                                 }
                             }
                             .onDelete(perform: recipevm.deleteIngredient)
@@ -108,35 +107,6 @@ struct IngredientView: View {
                             
                         }
                     }
-                    
-                    //                    HStack {
-                    //                        Button {
-                    //                            recipevm.addIngredient()
-                    //                        } label: {
-                    //                            Text("+ Zutat")
-                    //                                .foregroundStyle(.white)
-                    //                                .padding()
-                    //                                .frame(maxWidth: .infinity)
-                    //                                .background {
-                    //                                    RoundedRectangle(cornerRadius: 10)
-                    //                                        .foregroundStyle(.green)
-                    //                                }
-                    //                        }
-                    //
-                    //                        Button {
-                    //                            isScanning = true
-                    //                        } label: {
-                    //                            Text("QR-Code scannen")
-                    //                                .foregroundStyle(.white)
-                    //                                .padding()
-                    //                                .frame(maxWidth: .infinity)
-                    //                                .background {
-                    //                                    RoundedRectangle(cornerRadius: 10)
-                    //                                        .foregroundStyle(.orange)
-                    //                                }
-                    //                        }
-                    //                    }
-                    //                    .padding(.horizontal)
                     
                     HStack {
                         Button {

@@ -42,11 +42,6 @@ struct APIInformation: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-//                    Text("Verwendete APIs")
-//                        .font(.largeTitle)
-//                        .bold()
-//                        .padding(.bottom, 8)
-                    
                     ForEach(apis) { api in
                         APIInfoCard(api: api)
                     }
