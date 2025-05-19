@@ -10,8 +10,8 @@ import FirebaseAuth
 
 struct LoginView: View {
     
-    @State private var email = ""
-    @State private var password = ""
+    @State var email = ""
+    @State var password = ""
     
     @State private var showForgotPassword = false
     
@@ -56,6 +56,10 @@ struct LoginView: View {
                         Text("ANMELDEN")
                             .fontWeight(.semibold)
                         Image(systemName: "arrow.right")
+                        if authVM.isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        }
                     }
                     .foregroundStyle(.white)
                     .frame(width: UIScreen.main.bounds.width - 32, height: 48)
@@ -82,9 +86,13 @@ struct LoginView: View {
             }
         }
         .sheet(isPresented: $showForgotPassword) {
-            ForgotPasswordView(showForogtPassword: $showForgotPassword)
+            ForgotPasswordView(showForgotPassword: $showForgotPassword)
                 .presentationDetents([.fraction(0.3)])
         }
+        .alert("Fehler beim LogIn", isPresented: $authVM.errorLogin) { } message: {
+            Text("Bitte überprüfe deine Eingaben.")
+        }
+
     }
 }
 
@@ -114,17 +122,11 @@ struct InputView: View {
     }
 }
 
-extension LoginView: AuthenticationFormProtocol {
-    var formIsValid: Bool {
-        return !email.isEmpty && email.contains("@") && !password.isEmpty && password.count >= 6
-    }
-}
-
 struct ForgotPasswordView: View {
     
     @State private var email = ""
     @State private var mailSend = false
-    @Binding var showForogtPassword: Bool
+    @Binding var showForgotPassword: Bool
     
     @EnvironmentObject var authVM: AuthViewModel
     
@@ -132,11 +134,11 @@ struct ForgotPasswordView: View {
         NavigationStack {
             VStack {
                 InputView(text: $email, title: "Email Adresse", placeholder: "name@gmail.com")
+                    .autocapitalization(.none)
                 
                 Button {
                     mailSend = true
                     Auth.auth().sendPasswordReset(withEmail: email)
-                    showForgotPassword = false
                 } label: {
                     HStack {
                         Text("MAIL SENDEN")
@@ -156,7 +158,11 @@ struct ForgotPasswordView: View {
             .navigationTitle("Passwort vergessen")
             .navigationBarTitleDisplayMode(.inline)
         }
-        .alert("Test", isPresented: $mailSend) {} message: {
+        .alert("Test", isPresented: $mailSend) {
+            Button("Ok") {
+                showForgotPassword = false
+            }
+        } message: {
             Text("Wir haben dir soeben eine Mail mit einem Link zum zurücksetzen deines Passwortes gesendet.")
         }
     }

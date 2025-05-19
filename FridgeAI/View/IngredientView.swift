@@ -201,7 +201,7 @@ struct IngredientView: View {
         isScanning = false
         switch result {
         case .success(let scanResult):
-            scannedCode = scanResult.string
+//            scannedCode = scanResult.string
             fetchProductInfo(from: scanResult.string)
         case .failure(let error):
             print("Scan-Fehler: \(error.localizedDescription)")

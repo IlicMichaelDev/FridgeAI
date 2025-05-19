@@ -10,14 +10,16 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-protocol AuthenticationFormProtocol {
-    var formIsValid: Bool { get }
-}
-
+// @MainActor ist Concurrency und sorgt dafür das alles auf dem MainThread läuft
+// Concurrency sorgt dafür das viele Aufgaben gleichzeitig ablaufen können
 @MainActor
 class AuthViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var currentUser: User?
+    
+    @Published var isLoading: Bool = false
+    @Published var errorLogin = false
+    @Published var errorMessage: String = ""
     
     init() {
         self.userSession = Auth.auth().currentUser
@@ -27,15 +29,25 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    // async - Funktion kann lange brauchen bis eine Antwort kommt
+    // throws - hier wichtig, weil auch die funktion fetchUser fehlschlagen kann. wenn throws wegfällt dann kann man einen fehler im catch ausgeben, man weiß aber nicht wo genau der fehler auftritt
+    // await - warte bis die Funktion beendet ist, blockiere aber nicht die gesamte app
     func signIn(with email: String, password: String) async throws {
+        isLoading = true
+        
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
             self.userSession = result.user
             await fetchUser()
+            isLoading = false
         } catch {
             print("DEBUG: Failed to login: \(error.localizedDescription)")
+//            handleError(error)
+            isLoading = false
+            errorLogin = true
         }
     }
+    
     
     func createUser(withEmail email: String, password: String, fullname: String) async throws {
         do {
@@ -80,4 +92,13 @@ class AuthViewModel: ObservableObject {
         guard let snapshot = try? await Firestore.firestore().collection("users").document(uid).getDocument() else { return }
         self.currentUser = try? snapshot.data(as: User.self)
     }
+    
+    
+//    private func handleError(_ error: Error) {
+//        if let authError = error as? AuthErrorCode {
+//            errorMessage = authError.code.errorMessage
+//        } else {
+//            errorMessage = "Unbekannter Fehler: \(error.localizedDescription)"
+//        }
+//    }
 }

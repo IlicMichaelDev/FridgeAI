@@ -38,6 +38,7 @@ class BiometricAuthentification {
         let reason = "\(biometricType.getText) Authentification"
         authenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { isAuthorized, error in
             self.isAuthorized = isAuthorized
+            // Wenn error ungleich nil ist -> Fehler -> somit ist failed = true
             self.failed = error != nil
         }
     }
@@ -58,6 +59,7 @@ class BiometricAuthentification {
     
     // Hier wird geprüft ob das Gerät überhaupt über eine Möglichkeit zur Authentifizierung verfügt
     private func canEvaluatePolicy() -> Bool {
+        // NSError ist auf Objective-C - Es gibt Fehlercodes, zB. -6 "Biometrie nicht verfügbar"
         var error: NSError?
         let canEvaluate = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
         

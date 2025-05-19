@@ -64,8 +64,11 @@ class RecipeViewModel: ObservableObject {
         ingredients.remove(atOffsets: offsets)
     }
     
-    //Hier wird zuerst die ID vom ersten Link genommen
+    // Hier wird zuerst die ID vom ersten Link genommen
+    // @escaping bedeutet, dass das Closure auch nach der Funktion existieren kann (wichtig für asynchrone Tasks)
     func firstAPICall(completion: @escaping ([FirstAPIResponse]?) -> Void) {
+        
+        // Vorbereitung der API-URL - geht alle ingredients durch und kodiert die Sonderzeichen zB. Leerzeichen ist in der URL %20,...
         let ingredientList = ingredients.map { $0.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? $0.name }.joined(separator: ",")
         
         guard let url = URL(string: "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=\(APIKey)&includeNutrition=true") else {
@@ -74,20 +77,22 @@ class RecipeViewModel: ObservableObject {
             return
         }
         
+        // Asynchrone Netzerkabfrage - data = empfangene JSON, response = Server-Antort, error = Anfrage gescheitert
         URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            // Hier wird überprüft ob Daten vorhanden sind & kein Fehler auftritt
             guard let data = data, error == nil else {
                 completion(nil)
                 print("Error getting first data")
                 return
             }
             
+            // Hier wird versucht die Daten zu dekodieren
             do {
                 let response = try JSONDecoder().decode([FirstAPIResponse].self, from: data)
-                
                 DispatchQueue.main.async {
                     self.firstAPIResponses = response
                 }
-                
                 completion(response)
             } catch {
                 print("Error im Decoden von der ID: \(error)")
@@ -95,8 +100,9 @@ class RecipeViewModel: ObservableObject {
                 completion(nil)
             }
         }
-        .resume()
+        .resume() // Hierdurch startet erst die Netzwerkabfrage, ohne dem passiert nichts
     }
+    
     
     // Hier wird ein normaler API Call durchgeführt, die ID vom ersten wird beim Button eingesetzt
     func fetchRecipesInformation(id: Int) {
