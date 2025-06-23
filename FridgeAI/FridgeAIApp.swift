@@ -6,11 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 import Firebase
 
 @main
 struct FridgeAIApp: App {
     @StateObject var authVM = AuthViewModel()
+    
+    let container: ModelContainer = {
+        let schema = Schema([Ingredient.self])
+        let container = try! ModelContainer(for: schema, configurations: [])
+        return container
+    }()
     
     init() {
         FirebaseApp.configure()
@@ -20,6 +27,7 @@ struct FridgeAIApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(authVM)
+                .modelContainer(container)
         }
     }
 }

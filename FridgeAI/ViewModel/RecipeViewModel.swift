@@ -17,16 +17,19 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 class RecipeViewModel: ObservableObject {
-    
     let APIKey = "c19d4c45bb38487fb4faebbffe4b7246"
     let translateAPI = "a33084c3-f34a-4f0c-8962-8092d501e473:fx"
     
     @Published var firstAPIResponses: [FirstAPIResponse] = []
     
+//    @Query var ingredients: [Ingredient]
+    
     @Published var recipes: [Recipe] = []
-    @Published var ingredients: [Ingredient] = []
+//    @Published var ingredients: [Ingredient] = []
+//    @Query var ingredients: [Ingredient]
     @Published var newIngredientName = ""
     @Published var newIngredientAmount: Int = 1
     @Published var isLoading = false
@@ -52,21 +55,23 @@ class RecipeViewModel: ObservableObject {
                                                     Nutrient(name: "Carbohydrates", amount: 11.1, unit: "g", percentOfDailyNeeds: 3.67)],
                                                                          caloricBreakdown: CaloricBreakdown(percentProtein: 4.4, percentFat: 5.5, percentCarbs: 6.6)), instructions: "Slice the tomato into thin round discs. Roll the mint and sage leaves into a tight ball and then chop it up finely. Add to the olive oil and sumac to make a dressing. Drizzle over the tomato slices.")]
     
-    func addIngredient() {
+    func addIngredient(context: ModelContext) {
         guard !newIngredientName.isEmpty else { return }
         let ingredient = Ingredient(name: newIngredientName, amount: newIngredientAmount)
-        ingredients.append(ingredient)
+        context.insert(ingredient)
+//        ingredients.append(ingredient)
         newIngredientName = ""
         newIngredientAmount = 1
     }
     
     func deleteIngredient(at offsets: IndexSet) {
-        ingredients.remove(atOffsets: offsets)
+//        ingredients.remove(atOffsets: offsets)
+        
     }
     
     // Hier wird zuerst die ID vom ersten Link genommen
     // @escaping bedeutet, dass das Closure auch nach der Funktion existieren kann (wichtig für asynchrone Tasks)
-    func firstAPICall(completion: @escaping ([FirstAPIResponse]?) -> Void) {
+    func firstAPICall(ingredients: [Ingredient], completion: @escaping ([FirstAPIResponse]?) -> Void) {
         
         // Vorbereitung der API-URL - geht alle ingredients durch und kodiert die Sonderzeichen zB. Leerzeichen ist in der URL %20,...
         let ingredientList = ingredients.map { $0.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? $0.name }.joined(separator: ",")
@@ -76,8 +81,9 @@ class RecipeViewModel: ObservableObject {
             print("Invalid First URL")
             return
         }
+        print("IngredientsAPI 1: \(url)")
         
-        // Asynchrone Netzerkabfrage - data = empfangene JSON, response = Server-Antort, error = Anfrage gescheitert
+        // Asynchrone Netzerkabfrage - data = empfangene JSON, response = Server-Antw ort, error = Anfrage gescheitert
         URLSession.shared.dataTask(with: url) { data, response, error in
             
             // Hier wird überprüft ob Daten vorhanden sind & kein Fehler auftritt
@@ -101,6 +107,8 @@ class RecipeViewModel: ObservableObject {
             }
         }
         .resume() // Hierdurch startet erst die Netzwerkabfrage, ohne dem passiert nichts
+        
+        print("IngredientsAPI 2: \(url)")
     }
     
     
@@ -111,6 +119,7 @@ class RecipeViewModel: ObservableObject {
 //        let urlString = "https://api.spoonacular.com/recipes/716429/information?apiKey=\(APIKey)&includeNutrition=true"
 //        let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=\(APIKey)&includeNutrition=true"
         let urlString = "https://api.spoonacular.com/recipes/\(id)/information?&apiKey=\(APIKey)&includeNutrition=true"
+        print("Erster API Aufruf: \(urlString)")
         
         guard let url = URL(string: urlString) else {
             isLoading = false
@@ -130,6 +139,7 @@ class RecipeViewModel: ObservableObject {
                 print("Keine Daten enthalten")
                 return
             }
+            print(data)
             
             do {
                 let recipe = try JSONDecoder().decode(Recipe.self, from: data)
@@ -143,20 +153,19 @@ class RecipeViewModel: ObservableObject {
                     self.recipes = [recipe]
                     print(recipe.title)
                 }
-                print(urlString)
+                print("Zweite URL: \(urlString)")
             } catch {
                 print("Fehler beim dekodieren. \(error)")
             }
         }
         .resume()
-        
     }
     
-    func updateIngredientAmount(for ingredientID: UUID, newAmount: Int) {
-        if let index = ingredients.firstIndex(where: { $0.id == ingredientID }) {
-            guard newAmount >= 1 else {return}
-            ingredients[index].amount = newAmount
-            objectWillChange.send()
-        }
-    }
+//    func updateIngredientAmount(for ingredientID: UUID, newAmount: Int) {
+//        if let index = ingredients.firstIndex(where: { $0.id == ingredientID }) {
+//            guard newAmount >= 1 else {return}
+//            ingredients[index].amount = newAmount
+//            objectWillChange.send()
+//        }
+//    }
 }

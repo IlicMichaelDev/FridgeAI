@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @AppStorage("isDarkmode") private var isDarkmode = false
+    @AppStorage("isDarkmode") private var isDarkmode = true
     @AppStorage("isNotificationOn") private var isNotificationOn = false
     @AppStorage("isFaceIDOn") private var isFaceIDOn = false
     @AppStorage("isPINCodeOn") private var isPINCodeOn = false
@@ -139,6 +139,9 @@ struct SettingsView: View {
                     }
                 }
             }
+            .onAppear{
+                print("User: \(user)")
+            }
             .sheet(isPresented: $showProfileDetail) {
                 ProfileDetail()
                     .presentationDetents([.fraction(0.8)])
@@ -162,6 +165,13 @@ struct SettingsView: View {
             
             .alert("Authentifizierung fehlgeschlagen", isPresented: $showAuthFailed) {
                 Button("OK", role: .cancel) { }
+            }
+        } else {
+            Button("Zurück") {
+                dismiss()
+            }
+            .onAppear {
+                print("Kein user angemeldet")
             }
         }
     }

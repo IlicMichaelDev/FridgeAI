@@ -7,20 +7,27 @@
 
 import SwiftUI
 import CodeScanner
+import SwiftData
 
 struct IngredientView: View {
+    
+    @Environment(\.modelContext) var context
+    @EnvironmentObject var authVM: AuthViewModel
     
     @StateObject private var recipevm = RecipeViewModel()
     //    @StateObject var networkManager = NetworkCalls()
     
-    @State private var pickerState = true
+    @State private var pickerState = true 
     @State private var showScannerView = false
     @State private var isScanning = false
     @State private var showDetailView = false
     @State private var showSettingsView = false
+    @State private var showPremiumSheet = false
     
     @State private var scannedCode: String?
     @State private var productName: String?
+    
+    @Query var ingredients: [Ingredient]
     
     var body: some View {
         NavigationView {
@@ -51,11 +58,13 @@ struct IngredientView: View {
                     }
                     .padding()
                     
-                    if recipevm.ingredients.isEmpty {
+//                    if recipevm.ingredients.isEmpty {
+                    if ingredients.isEmpty {
                         ContentUnavailableView("Du hast nichts im Kühlschrank, du musst einkaufen gehen.", systemImage: "figure.walk.departure")
                     } else {
                         List {
-                            ForEach(recipevm.ingredients) { ingredient in
+//                            ForEach(recipevm.ingredients) { ingredient in
+                            ForEach(ingredients) { ingredient in
                                 HStack {
                                     Text("•")
                                         .font(.title)
@@ -67,7 +76,9 @@ struct IngredientView: View {
                                         .font(.system(size: 26))
                                         .foregroundStyle(.red)
                                         .onTapGesture {
-                                            recipevm.updateIngredientAmount(for: ingredient.id, newAmount: ingredient.amount - 1)
+//                                            recipevm.updateIngredientAmount(for: ingredient.id, newAmount: ingredient.amount - 1)
+                                            guard ingredient.amount >= 1 else { return }
+                                            ingredient.amount -= 1
                                         }
                                     Text("\(ingredient.amount)")
                                         .padding(.vertical, 8)
@@ -80,21 +91,28 @@ struct IngredientView: View {
                                         .font(.system(size: 26))
                                         .foregroundStyle(.green)
                                         .onTapGesture {
-                                            recipevm.updateIngredientAmount(for: ingredient.id, newAmount: ingredient.amount + 1)
+//                                            recipevm.updateIngredientAmount(for: ingredient.id, newAmount: ingredient.amount + 1)
+                                            ingredient.amount += 1
                                         }
                                 }
-                                .onTapGesture {
-                                    
+                                .swipeActions(edge: .trailing) {
+                                    Button("Delete", systemImage: "trash", role: .destructive) {
+                                        context.delete(ingredient)
+                                    }
                                 }
                             }
-                            .onDelete(perform: recipevm.deleteIngredient)
+//                            .onDelete(perform: recipevm.deleteIngredient)
                         }
                         .listStyle(.plain)
                         
                         
                         .onChange(of: productName) {
                             if let name = productName {
-                                recipevm.ingredients.append(Ingredient(name: name, amount: 1))
+//                                recipevm.ingredients.append(Ingredient(name: name, amount: 1))
+//                                let newIngredient = Ingredient(name: name, amount: 1)
+//                                context.insert(newIngredient)
+                                let newIngredient = Ingredient(name: name, amount: 1)
+                                context.insert(newIngredient)
                             } else {
                                 print("No available")
                             }
@@ -110,7 +128,7 @@ struct IngredientView: View {
                     
                     HStack {
                         Button {
-                            recipevm.addIngredient()
+                            recipevm.addIngredient(context: context)
                         } label: {
                             Text("+ Zutat")
                                 .foregroundStyle(.white)
@@ -123,7 +141,12 @@ struct IngredientView: View {
                         }
                         Button {
                             pickerState = false
-                            recipevm.firstAPICall { responses in
+                            let ingredientList = ingredients.map { $0.name }.joined(separator: ",")
+                            let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=c19d4c45bb38487fb4faebbffe4b7246&includeNutrition=true"
+                            print("API URL: \(urlString)")
+                            print(recipevm.recipes.count)
+                            
+                            recipevm.firstAPICall(ingredients: ingredients) { responses in
                                 guard let responses = responses else { return }
                                 
                                 DispatchQueue.main.async {
@@ -132,6 +155,7 @@ struct IngredientView: View {
                                     }
                                 }
                             }
+                            
                         } label: {
                             Text("Rezept finden")
                                 .foregroundStyle(.white)
@@ -141,8 +165,7 @@ struct IngredientView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .foregroundStyle(.blue)
                                 }
-                        }
-                        
+                        }                        
                         if recipevm.isLoading {
                             ProgressView()
                         }
@@ -183,17 +206,35 @@ struct IngredientView: View {
                     }
                 }
                 
+//                ToolbarItem(placement: .topBarTrailing) {
+//                    HStack(alignment: .center, spacing: 4) {
+//                        Image(systemName: "flame.fill")
+//                            .foregroundStyle(Gradient(colors: [Color.orange, Color.red]))
+//                        Text("2")
+//                    }
+//                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
-                    HStack(alignment: .center, spacing: 4) {
-                        Image(systemName: "flame.fill")
-                            .foregroundStyle(Gradient(colors: [Color.orange, Color.red]))
-                        Text("2")
+                    Button {
+                        showPremiumSheet = true
+                    } label: {
+                        Text("Upgrade Version")
+                            .foregroundStyle(.white)
+                            .padding(5)
+                            .bold()
+                            .background {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(LinearGradient(colors: [Color.red, Color.orange, Color.blue], startPoint: .leading, endPoint: .trailing))
+                            }
                     }
                 }
             }
         }
         .fullScreenCover(isPresented: $showSettingsView) {
             SettingsView(showSettingsView: $showSettingsView)
+        }
+        .fullScreenCover(isPresented: $showPremiumSheet) {
+            PremiumPlanView()
         }
     }
     
@@ -260,6 +301,113 @@ struct RecipeResultsView: View {
         }
         if recipe.veryHealthy { tags.append("Sehr gesund") }
         return tags.joined(separator: ", ")
+    }
+}
+
+struct PremiumPlanView: View {
+    
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                Text("Premium Pläne")
+                    .font(.system(size: 24, weight: .bold, design: .default))
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        PremiumCard(image: "crown.fill", version: "Pro", gradientColors: [Color.blue, Color.cyan], preis: "3")
+                        PremiumCard(image: "diamond.fill", version: "Premium", gradientColors: [Color.pink, Color.purple], preis: "5")
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(.gray)
+                            .frame(width: 20, height: 20)
+                            .padding(6)
+                            .background {
+                                Circle()
+                                    .fill(.gray.opacity(0.2))
+                            }
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct PremiumCard: View {
+    
+    let image: String
+    let version: String
+    let gradientColors: [Color]
+    let preis: String
+    
+    var body: some View {
+        ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 15)
+                .fill(LinearGradient(colors: gradientColors, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(width: 250, height: 500)
+            
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
+                    Image(systemName: image)
+                        .foregroundStyle(.white)
+                        .padding(8)
+                        .background {
+                            Circle()
+                                .fill(Color.gray.opacity(0.8))
+                        }
+                    
+                    Text(version)
+                        .font(.title)
+                        .bold()
+                        .foregroundStyle(.white)
+                }
+                .padding(.top)
+                
+                VorteilRow(vorteil: "3 Rezepte pro Tag")
+                    .padding(.top)
+                VorteilRow(vorteil: "QR-Code Scanner")
+                VorteilRow(vorteil: "Test")
+                
+            }
+            
+            Button {
+                
+            } label: {
+                Text("\(preis)€ pro Monat")
+                    .foregroundStyle(LinearGradient(colors: [Color.blue, Color.cyan], startPoint: .leading, endPoint: .trailing))
+                    .padding()
+                    .font(.system(size: 18))
+                    .bold()
+                    .background {
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(Color.white)
+                    }
+            }
+            .padding(.top, 420)
+        }
+    }
+    
+    @ViewBuilder
+    private func VorteilRow(vorteil: String) -> some View {
+        HStack {
+            Image(systemName: "checkmark.circle")
+                .font(.system(size: 18))
+                .foregroundStyle(.white)
+            
+            Text(vorteil)
+                .font(.system(size: 18))
+                .foregroundStyle(.white)
+        }
     }
 }
 
