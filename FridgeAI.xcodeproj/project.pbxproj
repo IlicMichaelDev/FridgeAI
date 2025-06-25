@@ -57,6 +57,7 @@
 		0681C1AD2DBF68D200B92E67 /* ReportBugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportBugView.swift; sourceTree = "<group>"; };
 		068BEA802DBA2A2400FB693D /* NetworkCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCalls.swift; sourceTree = "<group>"; };
 		06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Keys.xcconfig; sourceTree = "<group>"; };
+		06A1221C2E0C2B97001FDC40 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		06A34DB92DAE8D8600ADAA6B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		06A34DBB2DAE8D8600ADAA6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientView.swift; sourceTree = "<group>"; };
@@ -85,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */,
+				06A1221C2E0C2B97001FDC40 /* .gitignore */,
 				06A34DBE2DAE8D8600ADAA6B /* FridgeAI */,
 				0601CA3D2DAD1414006015E4 /* Products */,
 			);
