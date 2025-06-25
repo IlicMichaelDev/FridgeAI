@@ -1,0 +1,13 @@
+//
+//  Keys.xcconfig
+//  FridgeAI
+//
+//  Created by Michael Ilic on 25.06.25.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// Keys.xcconfig
+API_KEY = cc96bb792152452891b0dafe1e97e1d3
+//translateAPI = a33084c3-f34a-4f0c-8962-8092d501e473:fx

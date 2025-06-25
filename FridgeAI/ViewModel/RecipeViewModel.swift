@@ -20,8 +20,8 @@ import SwiftUI
 import SwiftData
 
 class RecipeViewModel: ObservableObject {
-    let APIKey = "c19d4c45bb38487fb4faebbffe4b7246"
-    let translateAPI = "a33084c3-f34a-4f0c-8962-8092d501e473:fx"
+//    let APIKey = "cc96bb792152452891b0dafe1e97e1d3"
+//    let translateAPI = "a33084c3-f34a-4f0c-8962-8092d501e473:fx"
     
     @Published var firstAPIResponses: [FirstAPIResponse] = []
     
@@ -73,10 +73,14 @@ class RecipeViewModel: ObservableObject {
     // @escaping bedeutet, dass das Closure auch nach der Funktion existieren kann (wichtig für asynchrone Tasks)
     func firstAPICall(ingredients: [Ingredient], completion: @escaping ([FirstAPIResponse]?) -> Void) {
         
+        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String else {
+            fatalError("API_KEY nicht gefunden")
+        }
+        
         // Vorbereitung der API-URL - geht alle ingredients durch und kodiert die Sonderzeichen zB. Leerzeichen ist in der URL %20,...
         let ingredientList = ingredients.map { $0.name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? $0.name }.joined(separator: ",")
         
-        guard let url = URL(string: "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=\(APIKey)&includeNutrition=true") else {
+        guard let url = URL(string: "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=\(apiKey)&includeNutrition=true") else {
             completion(nil)
             print("Invalid First URL")
             return
@@ -116,9 +120,13 @@ class RecipeViewModel: ObservableObject {
     func fetchRecipesInformation(id: Int) {
         isLoading = true
         
+        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String else {
+            fatalError("API_KEY nicht gefunden")
+        }
+        
 //        let urlString = "https://api.spoonacular.com/recipes/716429/information?apiKey=\(APIKey)&includeNutrition=true"
 //        let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=\(APIKey)&includeNutrition=true"
-        let urlString = "https://api.spoonacular.com/recipes/\(id)/information?&apiKey=\(APIKey)&includeNutrition=true"
+        let urlString = "https://api.spoonacular.com/recipes/\(id)/information?&apiKey=\(apiKey)&includeNutrition=true"
         print("Erster API Aufruf: \(urlString)")
         
         guard let url = URL(string: urlString) else {

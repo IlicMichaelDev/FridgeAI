@@ -56,6 +56,7 @@
 		0681C1AA2DBF68B100B92E67 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0681C1AD2DBF68D200B92E67 /* ReportBugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportBugView.swift; sourceTree = "<group>"; };
 		068BEA802DBA2A2400FB693D /* NetworkCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCalls.swift; sourceTree = "<group>"; };
+		06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Keys.xcconfig; sourceTree = "<group>"; };
 		06A34DB92DAE8D8600ADAA6B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		06A34DBB2DAE8D8600ADAA6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientView.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 		0601CA332DAD1414006015E4 = {
 			isa = PBXGroup;
 			children = (
+				06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */,
 				06A34DBE2DAE8D8600ADAA6B /* FridgeAI */,
 				0601CA3D2DAD1414006015E4 /* Products */,
 			);
@@ -328,6 +330,7 @@
 /* Begin XCBuildConfiguration section */
 		0601CA482DAD1415006015E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -392,6 +395,7 @@
 		};
 		0601CA492DAD1415006015E4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -449,6 +453,7 @@
 		};
 		0601CA4B2DAD1415006015E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -458,6 +463,7 @@
 				DEVELOPMENT_TEAM = 79N9K2FRXV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FridgeAI/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Wir benötigen die Kamera zum scannen von Produkten";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Ich würde gerne FaceID verwenden";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -480,6 +486,7 @@
 		};
 		0601CA4C2DAD1415006015E4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06A1221A2E0C23DD001FDC40 /* Keys.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -489,6 +496,7 @@
 				DEVELOPMENT_TEAM = 79N9K2FRXV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FridgeAI/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Wir benötigen die Kamera zum scannen von Produkten";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Ich würde gerne FaceID verwenden";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
