@@ -26,6 +26,7 @@ struct IngredientView: View {
     
     @State private var scannedCode: String?
     @State private var productName: String?
+    @State private var productImage: String?
     
     @Query var ingredients: [Ingredient]
     
@@ -66,8 +67,19 @@ struct IngredientView: View {
 //                            ForEach(recipevm.ingredients) { ingredient in
                             ForEach(ingredients) { ingredient in
                                 HStack {
-                                    Text("•")
-                                        .font(.title)
+//                                    Text("•")
+//                                        .font(.title)
+                                    if let imageURL = productImage {
+                                        AsyncImage(url: URL(string: imageURL)) { image in
+                                            image
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 200)
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                    }
+                                    
                                     Text(ingredient.name)
                                     
                                     Spacer()
@@ -107,11 +119,11 @@ struct IngredientView: View {
                         
                         
                         .onChange(of: productName) {
-                            if let name = productName {
+                            if let name = productName, let image = productImage {
 //                                recipevm.ingredients.append(Ingredient(name: name, amount: 1))
 //                                let newIngredient = Ingredient(name: name, amount: 1)
 //                                context.insert(newIngredient)
-                                let newIngredient = Ingredient(name: name, amount: 1)
+                                let newIngredient = Ingredient(name: name, amount: 1, image: image)
                                 context.insert(newIngredient)
                             } else {
                                 print("No available")
@@ -141,10 +153,11 @@ struct IngredientView: View {
                         }
                         Button {
                             pickerState = false
-                            let ingredientList = ingredients.map { $0.name }.joined(separator: ",")
-                            let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=c19d4c45bb38487fb4faebbffe4b7246&includeNutrition=true"
-                            print("API URL: \(urlString)")
-                            print(recipevm.recipes.count)
+                            // Für Testzwecke damit ich sehe welche API verwendet wird
+//                            let ingredientList = ingredients.map { $0.name }.joined(separator: ",")
+//                            let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=c19d4c45bb38487fb4faebbffe4b7246&includeNutrition=true"
+//                            print("API URL: \(urlString)")
+//                            print(recipevm.recipes.count)
                             
                             recipevm.firstAPICall(ingredients: ingredients) { responses in
                                 guard let responses = responses else { return }
@@ -155,7 +168,6 @@ struct IngredientView: View {
                                     }
                                 }
                             }
-                            
                         } label: {
                             Text("Rezept finden")
                                 .foregroundStyle(.white)
@@ -178,7 +190,7 @@ struct IngredientView: View {
                     List {
                         //Für testzwecke statt '.recipes' - '.testRecipes' eingeben
                         ForEach(recipevm.recipes, id: \.id) { recipe in
-                            NavigationLink(destination: RecipeView(recipe: recipe)) {
+                            NavigationLink(destination: RecipeView(ingredients: ingredients, recipe: recipe)) {
                                 RecipeResultsView(recipe: recipe)
                             }
                         }
@@ -258,7 +270,10 @@ struct IngredientView: View {
                 if let product = try? JSONDecoder().decode(ProductResponse.self, from: data) {
                     DispatchQueue.main.async {
                         productName = product.product.product_name ?? "Unbekanntes Produkt"
+                        productImage = product.product.image_url ?? "Kein Bild vorhanden"
                     }
+                    print(productName)
+                    print(productImage)
                 }
             }
         }.resume()

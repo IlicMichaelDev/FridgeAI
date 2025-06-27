@@ -14,4 +14,5 @@ struct ProductResponse: Codable {
 
 struct Product: Codable {
     let product_name: String?
+    let image_url: String?
 }

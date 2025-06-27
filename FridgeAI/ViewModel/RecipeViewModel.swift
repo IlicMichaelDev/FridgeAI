@@ -32,9 +32,10 @@ class RecipeViewModel: ObservableObject {
 //    @Query var ingredients: [Ingredient]
     @Published var newIngredientName = ""
     @Published var newIngredientAmount: Int = 1
+    @Published var newProductImage: String = ""
     @Published var isLoading = false
     
-    @Published var testingredients = [Ingredient(name: "Tomate", amount: 2), Ingredient(name: "Gurke", amount: 12)]
+    @Published var testingredients = [Ingredient(name: "Tomate", amount: 2, image: ""), Ingredient(name: "Gurke", amount: 12, image: "")]
     
     @Published var testRecipes: [Recipe] = [Recipe(id: 645555, title: "Green Tomato Salad #1", image: "https://img.spoonacular.com/recipes/645555-312x231.jpg",
                                                    missedIngredients: [MissedIngredients(id: 10211111, name: "sumac powder"), MissedIngredients(id: 5, name: "sage and mint leaves")],
@@ -55,13 +56,15 @@ class RecipeViewModel: ObservableObject {
                                                     Nutrient(name: "Carbohydrates", amount: 11.1, unit: "g", percentOfDailyNeeds: 3.67)],
                                                                          caloricBreakdown: CaloricBreakdown(percentProtein: 4.4, percentFat: 5.5, percentCarbs: 6.6)), instructions: "Slice the tomato into thin round discs. Roll the mint and sage leaves into a tight ball and then chop it up finely. Add to the olive oil and sumac to make a dressing. Drizzle over the tomato slices.")]
     
+    
     func addIngredient(context: ModelContext) {
         guard !newIngredientName.isEmpty else { return }
-        let ingredient = Ingredient(name: newIngredientName, amount: newIngredientAmount)
+        let ingredient = Ingredient(name: newIngredientName, amount: newIngredientAmount, image: newProductImage)
         context.insert(ingredient)
 //        ingredients.append(ingredient)
         newIngredientName = ""
         newIngredientAmount = 1
+        newProductImage = ""
     }
     
     func deleteIngredient(at offsets: IndexSet) {
@@ -85,7 +88,6 @@ class RecipeViewModel: ObservableObject {
             print("Invalid First URL")
             return
         }
-        print("IngredientsAPI 1: \(url)")
         
         // Asynchrone Netzerkabfrage - data = empfangene JSON, response = Server-Antw ort, error = Anfrage gescheitert
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -111,8 +113,6 @@ class RecipeViewModel: ObservableObject {
             }
         }
         .resume() // Hierdurch startet erst die Netzwerkabfrage, ohne dem passiert nichts
-        
-        print("IngredientsAPI 2: \(url)")
     }
     
     
@@ -127,7 +127,6 @@ class RecipeViewModel: ObservableObject {
 //        let urlString = "https://api.spoonacular.com/recipes/716429/information?apiKey=\(APIKey)&includeNutrition=true"
 //        let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=\(APIKey)&includeNutrition=true"
         let urlString = "https://api.spoonacular.com/recipes/\(id)/information?&apiKey=\(apiKey)&includeNutrition=true"
-        print("Erster API Aufruf: \(urlString)")
         
         guard let url = URL(string: urlString) else {
             isLoading = false
@@ -147,7 +146,6 @@ class RecipeViewModel: ObservableObject {
                 print("Keine Daten enthalten")
                 return
             }
-            print(data)
             
             do {
                 let recipe = try JSONDecoder().decode(Recipe.self, from: data)
@@ -161,7 +159,6 @@ class RecipeViewModel: ObservableObject {
                     self.recipes = [recipe]
                     print(recipe.title)
                 }
-                print("Zweite URL: \(urlString)")
             } catch {
                 print("Fehler beim dekodieren. \(error)")
             }
