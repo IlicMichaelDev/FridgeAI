@@ -151,8 +151,7 @@ struct SettingsView: View {
                     .presentationDetents([.fraction(0.7)])
             }
             .sheet(isPresented: $showBugView) {
-                ReportBugView()
-                    .presentationDetents([.fraction(0.8)])
+                ReportBugView()										
             }
             .sheet(isPresented: $showAboutMeView) {
                 AboutMeView()

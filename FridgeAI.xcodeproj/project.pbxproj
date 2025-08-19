@@ -13,6 +13,8 @@
 		0609D2282DB25D81007A19DD /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0609D2272DB25D81007A19DD /* Barcode.swift */; };
 		060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7B852DB8EF6C0082EC21 /* Nutrition.swift */; };
 		060C7B892DB8EFAC0082EC21 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7B882DB8EFAC0082EC21 /* Extensions.swift */; };
+		062288502E549FD90026B70B /* IngredientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0622884F2E549FD90026B70B /* IngredientDetailView.swift */; };
+		062288522E54A01E0026B70B /* AddIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062288512E54A01E0026B70B /* AddIngredientView.swift */; };
 		063312552DB00CE800AFA650 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 063312542DB00CE800AFA650 /* CodeScanner */; };
 		067632C52DBF83B3009E8A80 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067632C42DBF83B3009E8A80 /* User.swift */; };
 		067632C82DBF84D2009E8A80 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067632C72DBF84D2009E8A80 /* LoginView.swift */; };
@@ -35,6 +37,7 @@
 		06A34DCB2DAE8DEA00ADAA6B /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */; };
 		06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */; };
 		06A34DCF2DAE8F0000ADAA6B /* RecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */; };
+		06F0AF792E1407770085EDCD /* PremiumPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F0AF782E1407770085EDCD /* PremiumPlanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +48,8 @@
 		0609D2272DB25D81007A19DD /* Barcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
 		060C7B852DB8EF6C0082EC21 /* Nutrition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrition.swift; sourceTree = "<group>"; };
 		060C7B882DB8EFAC0082EC21 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0622884F2E549FD90026B70B /* IngredientDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientDetailView.swift; sourceTree = "<group>"; };
+		062288512E54A01E0026B70B /* AddIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientView.swift; sourceTree = "<group>"; };
 		067632C42DBF83B3009E8A80 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		067632C72DBF84D2009E8A80 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		067632C92DBF84E0009E8A80 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
@@ -66,6 +71,7 @@
 		06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
 		06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewModel.swift; sourceTree = "<group>"; };
+		06F0AF782E1407770085EDCD /* PremiumPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumPlanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +146,16 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
+		062288532E54A0490026B70B /* Ingredients */ = {
+			isa = PBXGroup;
+			children = (
+				06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */,
+				062288512E54A01E0026B70B /* AddIngredientView.swift */,
+				0622884F2E549FD90026B70B /* IngredientDetailView.swift */,
+			);
+			path = Ingredients;
+			sourceTree = "<group>";
+		};
 		067632C62DBF84C2009E8A80 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,10 +228,11 @@
 			isa = PBXGroup;
 			children = (
 				067632D42DBF977C009E8A80 /* ContentView.swift */,
-				06A34DBC2DAE8D8600ADAA6B /* IngredientView.swift */,
 				06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */,
+				062288532E54A0490026B70B /* Ingredients */,
 				067632C62DBF84C2009E8A80 /* Authentication */,
 				0681C1AB2DBF68B100B92E67 /* Settings */,
+				06F0AF782E1407770085EDCD /* PremiumPlanView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -321,6 +338,9 @@
 				067632D72DBFDA01009E8A80 /* ImprovementView.swift in Sources */,
 				060992832DC22083008CC014 /* APIInformation.swift in Sources */,
 				067632D32DBF89B9009E8A80 /* AuthViewModel.swift in Sources */,
+				06F0AF792E1407770085EDCD /* PremiumPlanView.swift in Sources */,
+				062288522E54A01E0026B70B /* AddIngredientView.swift in Sources */,
+				062288502E549FD90026B70B /* IngredientDetailView.swift in Sources */,
 				060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */,
 				06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */,
 				0681C1AC2DBF68B100B92E67 /* SettingsView.swift in Sources */,

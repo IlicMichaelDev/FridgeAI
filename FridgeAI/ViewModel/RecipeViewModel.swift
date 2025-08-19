@@ -18,24 +18,23 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import CodeScanner
 
 class RecipeViewModel: ObservableObject {
+    
+    @Environment(\.modelContext) var context
+    
 //    let APIKey = "cc96bb792152452891b0dafe1e97e1d3"
 //    let translateAPI = "a33084c3-f34a-4f0c-8962-8092d501e473:fx"
     
     @Published var firstAPIResponses: [FirstAPIResponse] = []
-    
-//    @Query var ingredients: [Ingredient]
-    
     @Published var recipes: [Recipe] = []
-//    @Published var ingredients: [Ingredient] = []
-//    @Query var ingredients: [Ingredient]
     @Published var newIngredientName = ""
     @Published var newIngredientAmount: Int = 1
     @Published var newProductImage: String = ""
     @Published var isLoading = false
-    
-    @Published var testingredients = [Ingredient(name: "Tomate", amount: 2, image: ""), Ingredient(name: "Gurke", amount: 12, image: "")]
+    @Published var isScanning = false
+    @Published var productName: String?
     
     @Published var testRecipes: [Recipe] = [Recipe(id: 645555, title: "Green Tomato Salad #1", image: "https://img.spoonacular.com/recipes/645555-312x231.jpg",
                                                    missedIngredients: [MissedIngredients(id: 10211111, name: "sumac powder"), MissedIngredients(id: 5, name: "sage and mint leaves")],
@@ -59,13 +58,19 @@ class RecipeViewModel: ObservableObject {
     
     func addIngredient(context: ModelContext) {
         guard !newIngredientName.isEmpty else { return }
-        let ingredient = Ingredient(name: newIngredientName, amount: newIngredientAmount, image: newProductImage)
+        let ingredient = Ingredient(
+            name: newIngredientName,
+            amount: newIngredientAmount,
+            category: .beverages,
+            imageData: newProductImage.isEmpty ? nil : Data(base64Encoded: newProductImage))
+        
         context.insert(ingredient)
-//        ingredients.append(ingredient)
+        
         newIngredientName = ""
         newIngredientAmount = 1
         newProductImage = ""
     }
+    
     
     func deleteIngredient(at offsets: IndexSet) {
 //        ingredients.remove(atOffsets: offsets)
@@ -89,7 +94,7 @@ class RecipeViewModel: ObservableObject {
             return
         }
         
-        // Asynchrone Netzerkabfrage - data = empfangene JSON, response = Server-Antw ort, error = Anfrage gescheitert
+        // Asynchrone Netzerkabfrage - data = empfangene JSON, response = Server-Antwort, error = Anfrage gescheitert
         URLSession.shared.dataTask(with: url) { data, response, error in
             
             // Hier wird überprüft ob Daten vorhanden sind & kein Fehler auftritt
@@ -166,11 +171,39 @@ class RecipeViewModel: ObservableObject {
         .resume()
     }
     
-//    func updateIngredientAmount(for ingredientID: UUID, newAmount: Int) {
-//        if let index = ingredients.firstIndex(where: { $0.id == ingredientID }) {
-//            guard newAmount >= 1 else {return}
-//            ingredients[index].amount = newAmount
-//            objectWillChange.send()
-//        }
-//    }
+    func handleScan(result: Result<ScanResult, ScanError>) {
+        isScanning = false
+        switch result {
+        case .success(let scanResult):
+            fetchProductInfo(from: scanResult.string)
+        case .failure(let error):
+            print("Scan-Fehler: \(error.localizedDescription)")
+        }
+    }
+    
+    func fetchProductInfo(from barcode: String) {
+        let urlString = "https://world.openfoodfacts.org/api/v0/product/\(barcode).json"
+        guard let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            if let data = data {
+                if let product = try? JSONDecoder().decode(ProductResponse.self, from: data),
+                   let imageUrlString = product.product.image_url,
+                   let imageUrl = URL(string: imageUrlString),
+                   let imageData = try? Data(contentsOf: imageUrl) {
+                    DispatchQueue.main.async {
+                        self.productName = product.product.product_name ?? "Unbekanntes Produkt"
+                        
+                        let newIngredient = Ingredient(
+                            name: self.productName ?? "Unbekannt",
+                            amount: 1,
+                            category: .beverages,
+                            imageData: imageData)
+                        self.context.insert(newIngredient)
+                        self.productName = ""
+                    }
+                }
+            }
+        }.resume()
+    }
 }
