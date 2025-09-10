@@ -14,21 +14,21 @@ struct IngredientView: View {
     @Environment(\.modelContext) var context
     @EnvironmentObject var authVM: AuthViewModel
     
+    @Query(sort: \Ingredient.name) var ingredients: [Ingredient]
+    
     @StateObject private var recipevm = RecipeViewModel()
-    //    @StateObject var networkManager = NetworkCalls()
     
     @State private var pickerState = true
     @State private var showScannerView = false
-    @State private var showDetailView = false
     @State private var showSettingsView = false
     @State private var showPremiumSheet = false
+    @State private var isFiltering = false
     
     @State private var scannedCode: String?
-    @State private var selectedIngredient: Ingredient?
+    @State private var searchText = ""
+    @State private var selectedCategories: Set <IngredientCategory> = []
     
     @State private var showAddIngredientView = false
-    
-    @Query(sort: \Ingredient.name) var ingredients: [Ingredient]
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -73,162 +73,15 @@ struct IngredientView: View {
                         }
                     }
                     
-                    // Wenn der QR-Code gescannt wurde dann soll sich eine kleine View öffnen wo di eDaten automatisch eingetragen werden
                     if pickerState {
-                        HStack {
-                            TextField("Zutat", text: $recipevm.newIngredientName)
-                            Button {
-                                recipevm.isScanning = true
-                            } label: {
-                                Image(systemName: "camera.viewfinder")
-                                    .resizable()
-                                    .frame(width: 25, height: 25)
-                            }
-                            
-                        }
-                        .padding()
-                        .background {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(style: StrokeStyle(dash: [5]))
-                        }
-                        .padding()
-                        
+                        SearchFilterBar(searchText: $searchText, isFiltering: $isFiltering, selectedCategories: $selectedCategories)
+                            .padding(.bottom, 8)
+
                         if ingredients.isEmpty {
                             ContentUnavailableView("Du hast nichts im Kühlschrank, du musst einkaufen gehen.", systemImage: "figure.walk.departure")
                         } else {
-                            List {
-                                ForEach(ingredients) { ingredient in
-                                    HStack(spacing: 12) {
-                                        if let image = ingredient.image {
-                                            Image(uiImage: image)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 40, height: 40)
-                                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        } else {
-                                            Image(systemName: "\(ingredient.category.iconName)")
-                                                .foregroundColor(ingredient.category.iconColor)
-                                                .frame(width: 40, height: 40)
-                                                .background(ingredient.category.backgroundColor)
-                                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        }
-                                        
-                                        Text(ingredient.name)
-                                            .font(.system(size: 16, weight: .medium))
-                                        
-                                        Spacer()
-                                        
-                                        HStack(spacing: 8) {
-                                            Button {
-                                                guard ingredient.amount >= 1 else { return }
-                                                withAnimation(.spring()) {
-                                                    ingredient.amount -= 1
-                                                }
-                                            } label: {
-                                                Image(systemName: "minus.circle.fill")
-                                                    .font(.title3)
-                                                    .foregroundColor(ingredient.amount > 0 ? .red : .gray)
-                                            }
-                                            .disabled(ingredient.amount <= 0)
-                                            
-                                            Text("\(ingredient.amount)")
-                                                .font(.system(.body, design: .monospaced))
-                                                .frame(minWidth: 30)
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 12)
-                                                .background(Color.gray.opacity(0.1))
-                                                .clipShape(Capsule())
-                                            
-                                            Button {
-                                                withAnimation(.spring()) {
-                                                    ingredient.amount += 1
-                                                }
-                                            } label: {
-                                                Image(systemName: "plus.circle.fill")
-                                                    .font(.title3)
-                                                    .foregroundColor(.green)
-                                            }
-                                        }
-                                        .buttonStyle(.plain)
-                                    }
-                                    .padding(.vertical, 8)
-                                    .padding(.horizontal, 8)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                        Button(role: .destructive) {
-                                            withAnimation {
-                                                context.delete(ingredient)
-                                            }
-                                        } label: {
-                                            Label("Delete", systemImage: "trash.fill")
-                                        }
-                                    }
-                                    .onTapGesture {
-                                        selectedIngredient = ingredient
-                                        showDetailView = true
-                                    }
-                                }
-                                .listRowSeparator(.hidden)
-                                .listRowBackground(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color(.systemBackground))
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal)
-                                )
-                            }
-                            .listStyle(.plain)
-                            
-                            .sheet(isPresented: $recipevm.isScanning) {
-                                CodeScannerView(codeTypes: [.ean8, .ean13, .upce], completion: recipevm.handleScan)
-                            }
-                            
+                            IngredientListView(recipevm: recipevm, searchText: $searchText, selectedCategories: $selectedCategories, ingredients: ingredients)
                         }
-                        
-                        //                    HStack {
-                        //                        Button {
-                        //                            recipevm.addIngredient(context: context)
-                        //                        } label: {
-                        //                            Text("+ Zutat")
-                        //                                .foregroundStyle(.white)
-                        //                                .padding()
-                        //                                .frame(maxWidth: .infinity)
-                        //                                .background {
-                        //                                    RoundedRectangle(cornerRadius: 10)
-                        //                                        .foregroundStyle(.green)
-                        //                                }
-                        //                        }
-                        //                        Button {
-                        //                            pickerState = false
-                        //                            // Für Testzwecke damit ich sehe welche API verwendet wird
-                        //                            let ingredientList = ingredients.map { $0.name }.joined(separator: ",")
-                        //                            let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredientList)&number=5&apiKey=c19d4c45bb38487fb4faebbffe4b7246&includeNutrition=true"
-                        //                            print("API URL: \(urlString)")
-                        //                            print(recipevm.recipes.count)
-                        //
-                        //                            recipevm.firstAPICall(ingredients: ingredients) { responses in
-                        //                                guard let responses = responses else { return }
-                        //
-                        //                                DispatchQueue.main.async {
-                        //                                    if let firstID = responses.first?.id {
-                        //                                        self.recipevm.fetchRecipesInformation(id: firstID)
-                        //                                    }
-                        //                                }
-                        //                            }
-                        //                        } label: {
-                        //                            Text("Rezept finden")
-                        //                                .foregroundStyle(.white)
-                        //                                .frame(maxWidth: .infinity)
-                        //                                .padding()
-                        //                                .background {
-                        //                                    RoundedRectangle(cornerRadius: 10)
-                        //                                        .foregroundStyle(.blue)
-                        //                                }
-                        //                        }
-                        //                        if recipevm.isLoading {
-                        //                            ProgressView()
-                        //                        }
-                        //                    }
-                        //                    .padding(.horizontal)
-                        
                     } else {
                         if recipevm.recipes.isEmpty {
                             ContentUnavailableView("Du musst zuerst Zutaten hinzufügen damit ich dir ein gutes Rezept empfehlen kann.", systemImage: "oven")
@@ -273,39 +126,20 @@ struct IngredientView: View {
                                 .bold()
                                 .background {
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(LinearGradient(colors: [Color.red, Color.orange, Color.blue], startPoint: .leading, endPoint: .trailing))
+                                        .fill(LinearGradient(
+                                            colors: [Color.blue.opacity(0.8),
+                                            Color.purple.opacity(0.8)],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        ))
                                 }
                         }
                     }
                 }
                 .background(Color(.systemGroupedBackground))
             }
-            
-            Menu {
-                Button {
-//                    recipevm.addIngredient(context: context)
-                    showAddIngredientView = true
-                } label: {
-                    Label("Zutat hinzufügen", systemImage: "plus")
-                }
-                
-                Button {
-                    recipevm.isScanning = true
-                } label: {
-                    Label("QR-Code scannen", systemImage: "camera.viewfinder")
-                }
-            } label: {
-                Image(systemName: "plus")
-                    .font(.title.weight(.semibold))
-                    .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-                    .shadow(radius: 4, x: 0, y: 4)
-            }
-            .padding()
+            PlusButton()
         }
-        
         .fullScreenCover(isPresented: $showSettingsView) {
             SettingsView(showSettingsView: $showSettingsView)
         }
@@ -318,55 +152,32 @@ struct IngredientView: View {
                 .presentationCornerRadius(20)
                 .presentationDragIndicator(.visible)
         }
-        .sheet(isPresented: $showDetailView) {
-            if let ingredient = selectedIngredient {
-                IngredientDetailView(ingredient: ingredient)
-                    .presentationDetents([.height(280)])
-                    .presentationCornerRadius(20)
-                    .presentationDragIndicator(.visible)
-            }
-        }
     }
     
-
-}
-
-struct RecipeResultsView: View {
-    
-    let recipe: Recipe
-    
-    var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: recipe.image)) { image in
-                image
-                    .resizable()
-                    .frame(width: 90, height: 70)
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            } placeholder: {
-                Rectangle()
-                    .frame(width: 90, height: 70)
-                    .foregroundStyle(.secondary)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+    @ViewBuilder
+    private func PlusButton() -> some View {
+        Menu {
+            Button {
+                showAddIngredientView = true
+            } label: {
+                Label("Zutat hinzufügen", systemImage: "plus")
             }
             
-            VStack(alignment: .leading, spacing: 10) {
-                Text(recipe.title)
-                Text(getActiveTags())
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+            Button {
+                recipevm.isScanning = true
+            } label: {
+                Label("QR-Code scannen", systemImage: "camera.viewfinder")
             }
+        } label: {
+            Image(systemName: "plus")
+                .font(.title.weight(.semibold))
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .clipShape(Circle())
+                .shadow(radius: 4, x: 0, y: 4)
         }
-    }
-    
-    private func getActiveTags() -> String {
-        var tags = [String]()
-        if recipe.vegetarian && recipe.vegan { tags.append("Vegan") } else {
-            if recipe.vegetarian { tags.append("Vegetarisch") }
-            if recipe.vegan { tags.append("Vegan") }
-        }
-        if recipe.veryHealthy { tags.append("Sehr gesund") }
-        return tags.joined(separator: ", ")
+        .padding()
     }
 }
 
@@ -390,6 +201,111 @@ struct InfoRow: View {
                 .fontWeight(.medium)
         }
         .font(.subheadline)
+    }
+}
+
+struct SearchFilterBar: View {
+    @Binding var searchText: String
+    @Binding var isFiltering: Bool
+    @Binding var selectedCategories: Set<IngredientCategory>
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.secondary)
+                
+                TextField("Zutat suchen", text: $searchText)
+                    .textFieldStyle(PlainTextFieldStyle())
+                
+                if !searchText.isEmpty {
+                    Button(action: { searchText = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .padding(10)
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+            
+            FilterButton(isFiltering: $isFiltering, selectedCategories: $selectedCategories)
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct FilterButton: View {
+    @Binding var isFiltering: Bool
+    @Binding var selectedCategories: Set<IngredientCategory>
+    
+    var body: some View {
+        Menu {
+            ForEach(IngredientCategory.allCases, id: \.self) { category in
+                Button {
+                    if selectedCategories.contains(category) {
+                        selectedCategories.remove(category)
+                    } else {
+                        selectedCategories.insert(category)
+                    }
+                    
+                    isFiltering = !selectedCategories.isEmpty
+                } label: {
+                    HStack {
+                        if selectedCategories.contains(category) {
+                            Image(systemName: "checkmark.square.fill")
+                        } else {
+                            Image(systemName: "square")
+                        }
+                        
+                        Text(category.rawValue)
+                    }
+                }
+                .menuActionDismissBehavior(.disabled)
+            }
+            
+            // Trennlinie und Reset-Button
+            Divider()
+            
+            Button(role: .destructive) {
+                selectedCategories.removeAll()
+                isFiltering = false
+            } label: {
+                Label("Alle Filter entfernen", systemImage: "trash")
+            }
+            .disabled(selectedCategories.isEmpty)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: isFiltering ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    .font(.system(size: 18, weight: .medium))
+                
+                Text("Filter")
+                    .font(.system(size: 14, weight: .medium))
+                
+                // Badge mit Anzahl aktiver Filter
+                if !selectedCategories.isEmpty {
+                    Text("\(selectedCategories.count)")
+                        .font(.system(size: 12, weight: .bold))
+                        .padding(4)
+                        .frame(minWidth: 18)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .clipShape(Circle())
+                        .transition(.scale.combined(with: .opacity))
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(isFiltering ? Color.blue : Color(.systemBackground))
+            .foregroundColor(isFiltering ? .white : .blue)
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.blue, lineWidth: 1)
+            )
+            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        }
     }
 }
 

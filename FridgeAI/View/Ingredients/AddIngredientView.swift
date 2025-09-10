@@ -16,7 +16,7 @@ struct AddIngredientView: View {
     @State private var amount: Int = 1
     @State private var selectedCategory: IngredientCategory = .beverages
     @State private var expiryDate = Date()
-    @State private var isOrganic = true
+    @State private var isOrganic = false
     @State private var origin: String = "Deutschland"
     @State private var notes: String = ""
     @State private var showingImagePicker = false
@@ -37,9 +37,11 @@ struct AddIngredientView: View {
                                     showingImagePicker = true
                                 }
                         } else {
-                            Image(systemName: "photo")
+                            Image(systemName: selectedCategory.iconName)
+                                .font(.system(size: 25))
+                                .foregroundStyle(selectedCategory.iconColor)
                                 .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.2))
+                                .background(selectedCategory.backgroundColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .onTapGesture {
                                     showingImagePicker = true

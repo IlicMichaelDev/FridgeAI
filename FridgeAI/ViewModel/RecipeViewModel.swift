@@ -109,6 +109,7 @@ class RecipeViewModel: ObservableObject {
                 let response = try JSONDecoder().decode([FirstAPIResponse].self, from: data)
                 DispatchQueue.main.async {
                     self.firstAPIResponses = response
+                    print("Empfangen: \(response.count) Rezepte")
                 }
                 completion(response)
             } catch {

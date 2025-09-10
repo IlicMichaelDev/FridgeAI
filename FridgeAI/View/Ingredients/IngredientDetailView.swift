@@ -14,7 +14,6 @@ struct IngredientDetailView: View {
     let ingredient: Ingredient
     
     var body: some View {
-        
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .top) {
                 Image(systemName: "\(ingredient.category.iconName)")
@@ -87,6 +86,7 @@ struct IngredientDetailView: View {
             
             Spacer()
         }
+        .onAppear { print(ingredient.name) }
         .frame(maxWidth: .infinity)
         .background(Color(.systemGroupedBackground))
     }
