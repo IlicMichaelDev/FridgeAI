@@ -43,7 +43,6 @@ struct IngredientView: View {
                     .overlay(alignment: .trailing) {
                         Button {
                             if pickerState {
-                                // Rezept finden Logik
                                 pickerState = false
                                 // Für Testzwecke damit ich sehe welche API verwendet wird
                                 let ingredientList = ingredients.map { $0.name }.joined(separator: ",")

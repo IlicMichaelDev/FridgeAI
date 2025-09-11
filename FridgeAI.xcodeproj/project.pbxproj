@@ -42,6 +42,8 @@
 		06A34DCB2DAE8DEA00ADAA6B /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */; };
 		06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */; };
 		06A34DCF2DAE8F0000ADAA6B /* RecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */; };
+		06CE45182E72F02B00C12FC4 /* GroceryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CE45172E72F02B00C12FC4 /* GroceryViewModel.swift */; };
+		06CE451E2E73021100C12FC4 /* ChangeSupermarketForItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CE451D2E73021100C12FC4 /* ChangeSupermarketForItem.swift */; };
 		06D149272E5701F80003CD47 /* IngredientListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D149262E5701F80003CD47 /* IngredientListView.swift */; };
 		06D149292E57051E0003CD47 /* RecipeResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D149282E57051E0003CD47 /* RecipeResultsView.swift */; };
 		06F0AF792E1407770085EDCD /* PremiumPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F0AF782E1407770085EDCD /* PremiumPlanView.swift */; };
@@ -83,6 +85,8 @@
 		06A34DCA2DAE8DEA00ADAA6B /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
 		06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewModel.swift; sourceTree = "<group>"; };
+		06CE45172E72F02B00C12FC4 /* GroceryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryViewModel.swift; sourceTree = "<group>"; };
+		06CE451D2E73021100C12FC4 /* ChangeSupermarketForItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSupermarketForItem.swift; sourceTree = "<group>"; };
 		06D149262E5701F80003CD47 /* IngredientListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListView.swift; sourceTree = "<group>"; };
 		06D149282E57051E0003CD47 /* RecipeResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeResultsView.swift; sourceTree = "<group>"; };
 		06F0AF782E1407770085EDCD /* PremiumPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumPlanView.swift; sourceTree = "<group>"; };
@@ -175,8 +179,9 @@
 			isa = PBXGroup;
 			children = (
 				0650616F2E5D9F7B000A047C /* GroceryListView.swift */,
-				065061742E5DA37F000A047C /* AddCategoryView.swift */,
 				065061762E5DA392000A047C /* GroceryItemRowView.swift */,
+				06CE451D2E73021100C12FC4 /* ChangeSupermarketForItem.swift */,
+				065061742E5DA37F000A047C /* AddCategoryView.swift */,
 			);
 			path = GroceryList;
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 			children = (
 				06A34DCE2DAE8F0000ADAA6B /* RecipeViewModel.swift */,
 				067632D22DBF89B9009E8A80 /* AuthViewModel.swift */,
+				06CE45172E72F02B00C12FC4 /* GroceryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -268,8 +274,8 @@
 		06D1492A2E5705490003CD47 /* Recipes */ = {
 			isa = PBXGroup;
 			children = (
-				06D149282E57051E0003CD47 /* RecipeResultsView.swift */,
 				06A34DCC2DAE8E9200ADAA6B /* RecipeView.swift */,
+				06D149282E57051E0003CD47 /* RecipeResultsView.swift */,
 			);
 			path = Recipes;
 			sourceTree = "<group>";
@@ -376,6 +382,7 @@
 				06A34DC22DAE8D8600ADAA6B /* FridgeAIApp.swift in Sources */,
 				06A34DCF2DAE8F0000ADAA6B /* RecipeViewModel.swift in Sources */,
 				067632D72DBFDA01009E8A80 /* ImprovementView.swift in Sources */,
+				06CE45182E72F02B00C12FC4 /* GroceryViewModel.swift in Sources */,
 				060992832DC22083008CC014 /* APIInformation.swift in Sources */,
 				0650616E2E5D9E94000A047C /* TabBarView.swift in Sources */,
 				067632D32DBF89B9009E8A80 /* AuthViewModel.swift in Sources */,
@@ -387,6 +394,7 @@
 				060C7B862DB8EF6C0082EC21 /* Nutrition.swift in Sources */,
 				06A34DCD2DAE8E9200ADAA6B /* RecipeView.swift in Sources */,
 				06D149292E57051E0003CD47 /* RecipeResultsView.swift in Sources */,
+				06CE451E2E73021100C12FC4 /* ChangeSupermarketForItem.swift in Sources */,
 				0681C1AC2DBF68B100B92E67 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

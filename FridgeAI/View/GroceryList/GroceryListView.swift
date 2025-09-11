@@ -23,7 +23,7 @@ struct GroceryListView: View {
     @State private var selectedSupermarkt: Supermarket?
     
     @Query(sort: \GroceryCategory.createdAt, order: .forward) private var categories: [GroceryCategory]
-    @Query private var supermarkets: [Supermarket]
+    @Query(sort: \Supermarket.createdAt) private var supermarkets: [Supermarket]
     
     private var hasVisibleCategories: Bool {
 // Hier wird erstmal kontrolliert ob selectedSupermarkt nicht nil ist - also ob ein Supermarkt ausgewählt ist

@@ -42,6 +42,7 @@ class Supermarket: Codable {
     var id: UUID
     var name: String
     var codableColor: CodableColor
+    var createdAt: Date
     
     var color: Color {
         codableColor.color
@@ -51,6 +52,7 @@ class Supermarket: Codable {
         self.id = UUID()
         self.name = name
         self.codableColor = CodableColor(color: color)
+        self.createdAt = Date()
     }
     
     static var standardSupermarkets = [
@@ -80,7 +82,7 @@ class Supermarket: Codable {
     
     // CodingKeys fürs De- & Encoden
     enum CodingKeys: CodingKey {
-        case id, name, codableColor
+        case id, name, codableColor, createdAt
     }
     
     //Decoden
@@ -89,6 +91,7 @@ class Supermarket: Codable {
         id = try container.decode(UUID.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         codableColor = try container.decode(CodableColor.self, forKey: .codableColor)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
     }
     
     // Encoden

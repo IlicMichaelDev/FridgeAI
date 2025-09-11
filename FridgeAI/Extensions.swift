@@ -39,3 +39,39 @@ extension LoginView: AuthenticationFormProtocol {
 //        }
 //    }
 //}
+
+// View Extension für den Wackeleffekt beim löschen von Supermärkten
+extension View {
+    func wobble(_ active: Bool) -> some View {
+        modifier(WobbleEffect(active: active))
+    }
+}
+
+struct WobbleEffect: ViewModifier {
+    let active: Bool
+    @State private var angle: Double = 0
+    
+    func body(content: Content) -> some View {
+        content
+            .rotationEffect(.degrees(angle))
+            .onChange(of: active) { oldValue, newValue in
+                if newValue {
+                    startWobble()
+                } else {
+                    stopWobble()
+                }
+            }
+    }
+    
+    private func startWobble() {
+        withAnimation(Animation.easeInOut(duration: 0.15).repeatForever(autoreverses: true)) {
+            angle = 4.0
+        }
+    }
+    
+    private func stopWobble() {
+        withAnimation(Animation.easeInOut(duration: 0.15)) {
+            angle = 0
+        }
+    }
+}
